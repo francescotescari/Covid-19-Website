@@ -4,7 +4,7 @@
 </div>
 
 <div class="list-group-item-dark p-2 text-center my-4" *ngIf="countryName">
-  <a href="/">Worldwide</a> -> {{countryName}}
+  <a [routerLink]="['/']">Worldwide</a> -> {{countryName}}
 </div>
 
 <app-section [title]="'Corona Virus Summary Worldwide'" class="mat-elevation-z8">
@@ -13,6 +13,7 @@
 
 <app-section [title]="'Corona Virus Cases Distribution Worldwide'">
   Placeholder for pie chart
+  <app-pie-chart [data]="pieChartData" [labels]="pieChartLabels"></app-pie-chart>
 </app-section>
 
 <app-section [title]="'Daily Corona Virus Cases Worldwide'">

@@ -5,15 +5,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .bg-cases {
-  background-color: #fde29d;
+  background-color: #ffe29a;
 }
 
 .bg-recovered {
-  background-color: #87c7f3;
+  background-color: #86c7f3;
 }
 
 .bg-deaths {
-  background-color: #ed97ab;
+  background-color: #ffa1b5;
 }
 
 

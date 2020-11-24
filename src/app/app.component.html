@@ -1,4 +1,12 @@
 <app-header></app-header>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<mat-progress-bar
+  *ngIf="loading" color="accent" mode="indeterminate">
+</mat-progress-bar>
+<main #fader [@fadeAnimation]="loading">
+  <div class="container">
+
+    <span [@fadeAnimation]="isOpen">TEST</span>
+    <router-outlet #outlet="outlet" (activate)="setOutlet(outlet)"></router-outlet>
+  </div>
+</main>
+

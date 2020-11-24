@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {CoviddataModel} from './section/coviddata.model';
-import {CountriesEntryModel} from './countries-entry.model';
+import {CoviddataModel} from './page-main/section/coviddata.model';
+import {CountriesEntryModel} from './page-main/countries-entry.model';
 import {LocalCachingService} from './local-caching.service';
 import {tap} from 'rxjs/operators';
 

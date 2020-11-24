@@ -10,12 +10,10 @@ import {
   ViewChild
 } from '@angular/core';
 import {ApiSummaryModel, CoviddataService} from '../coviddata.service';
-import {DatatableComponent} from '../datatable/datatable.component';
 import {map, tap} from 'rxjs/operators';
-import {Observable, of, ReplaySubject, Subject} from 'rxjs';
-import {CountriesEntryModel} from '../countries-entry.model';
+import {Observable, of, ReplaySubject} from 'rxjs';
+import {CountriesEntryModel} from '../page-main/countries-entry.model';
 import {Router} from '@angular/router';
-import {CoviddataModel} from '../section/coviddata.model';
 
 
 @Component({

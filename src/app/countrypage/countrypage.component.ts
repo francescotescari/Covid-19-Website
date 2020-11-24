@@ -3,8 +3,8 @@ import {ApiSummaryModel, CoviddataService} from '../coviddata.service';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
-import {CoviddataModel} from '../section/coviddata.model';
-import {CountriesEntryModel} from '../countries-entry.model';
+import {CoviddataModel} from '../page-main/section/coviddata.model';
+import {CountriesEntryModel} from '../page-main/countries-entry.model';
 
 
 @Component({
