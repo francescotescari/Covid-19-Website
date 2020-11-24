@@ -1,0 +1,5 @@
+<app-coviddata-main [dataSource]="globalDataSource"></app-coviddata-main>
+
+<app-section [title]="'Corona Virus Cases by Country'">
+  <app-countries-table [dataSource]="countriesTableObservable" (countryClick)="router.navigate(['/country/'+$event])"></app-countries-table>
+</app-section>

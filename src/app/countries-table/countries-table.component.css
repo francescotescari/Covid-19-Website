@@ -1,0 +1,7 @@
+tr td:first-child {
+  flex: 1 1 28% !important
+}
+
+tr td, tr th {
+  flex: 1 1 12% !important;
+}
