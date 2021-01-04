@@ -8,8 +8,13 @@ import {tap} from 'rxjs/operators';
   templateUrl: './coviddata-table.component.html',
   styleUrls: ['./coviddata-table.component.css']
 })
-export class CoviddataTableComponent {
+export class CoviddataTableComponent implements OnInit {
 
   @Input('dataSource') dataSource: Observable<object>;
+  ready = false;
+
+  ngOnInit(): void {
+    this.dataSource.subscribe(_ => this.ready = true);
+  }
 
 }

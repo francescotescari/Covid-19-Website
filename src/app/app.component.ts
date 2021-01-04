@@ -10,48 +10,40 @@ import {
 } from '@angular/core';
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet} from '@angular/router';
 import {fadeAnimation} from './animations';
+import {LoadmanagerService} from './loadmanager.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  animations: [fadeAnimation]
+
 })
-export class AppComponent implements OnInit, AfterContentChecked {
-  @ViewChild('fader') fader: ElementRef;
+export class AppComponent implements OnInit, AfterViewInit {
 
   loading = true;
-  isOpen = true;
-  lastRoute = null;
-  outlet;
+  private loadService: LoadmanagerService;
 
-  constructor() {
-
+  constructor(loadService: LoadmanagerService) {
+    this.loadService = loadService;
   }
 
-  setOutlet(outlet): void{
-    this.outlet = outlet;
-  }
-
-
-  ngAfterContentChecked(): void {
-    if (!this.outlet){
-      return;
-    }
-    const route = this.outlet.isActivated ? this.outlet.activatedRoute : null;
-    const shouldLoad = this.lastRoute !== route;
-    if (!this.loading && shouldLoad){
-      this.fader.nativeElement.classList.add('faded');
-    } else if (this.loading && !shouldLoad){
-      this.fader.nativeElement.classList.remove('faded');
-    }
-    this.loading = shouldLoad;
-    this.lastRoute = route;
-    console.log('load', this.loading);
+  ngAfterViewInit(): void {
+    this.loadService.allLoadedCompletion().subscribe({
+      complete: () => this.loading = false
+    });
   }
 
   ngOnInit(): void {
-
+    this.loadService.resetCompletion();
   }
+
+  routerCallback(): void {
+    this.loading = true;
+    this.loadService.resetCompletion();
+    this.loadService.allLoadedCompletion().subscribe({
+      complete: () => this.loading = false
+    });
+  }
+
 }

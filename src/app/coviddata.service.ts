@@ -47,7 +47,6 @@ export class CoviddataService {
 
     if (data) {
       console.log('Data retrieved cached');
-      const x = of(data);
       return of(data);
     } else {
       console.log('Data not retrieved cached');

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8 w-100">
+<table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8 w-100" *ngIf="ready">
 
   <ng-container matColumnDef="key">
     <td mat-cell *matCellDef="let element"> {{ element.key }} </td>
@@ -9,6 +9,6 @@
   </ng-container>
 
   <tr mat-row *matRowDef="let row;  index as i; columns: ['key', 'value'];"
-      [ngClass]="i < 2 ? 'bg-cases': (i < 5 ? 'bg-recovered' : 'bg-deaths')"></tr>
+      [ngClass]="{'bg-cases': i<2, 'bg-recovered': i>=2 && i<5, 'bg-deaths': i>=5}"></tr>
 
 </table>

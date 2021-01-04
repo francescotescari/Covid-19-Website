@@ -8,7 +8,7 @@ import {
 
 export const fadeAnimation = trigger('fadeAnimation', [
   transition('* <=> *', [
-    style({ transform: 'translateX(-100%)'}),
+    style({ opacity: 0}),
     animate(1000)
   ]),
   transition('* => void', [
