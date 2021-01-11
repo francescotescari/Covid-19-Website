@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
-import {CountriesEntryModel} from '../../countries-entry.model';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import {CountryDiffEntry} from '../../../covid-data-models';
 
 @Component({
   selector: 'app-countries-table',
@@ -11,14 +11,14 @@ import {MatSort} from '@angular/material/sort';
 })
 export class CountriesTableComponent implements OnInit, AfterViewInit {
 
-  @Input('dataSource') dataSource: Observable<Array<CountriesEntryModel>>;
+  @Input('dataSource') dataSource: Observable<CountryDiffEntry[]>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Output('countryClick') countryClick = new EventEmitter<string>();
 
   tableDataSource;
 
   ngOnInit(): void {
-    this.tableDataSource = new MatTableDataSource<CountriesEntryModel>();
+    this.tableDataSource = new MatTableDataSource<CountryDiffEntry>();
     this.dataSource.subscribe({
       next: value => {
         this.tableDataSource.data = value;

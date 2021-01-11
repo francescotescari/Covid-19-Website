@@ -1,37 +1,37 @@
-<table mat-table [dataSource]="this.tableDataSource" matSort class="mat-elevation-z8 w-100" >
+<table mat-table [dataSource]="this.tableDataSource" matSort class="w-100" >
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="Country"> Country </th>
-    <td mat-cell *matCellDef="let element" class="text-left cursor-pointer" (click)="countryClick.emit(element.Slug)"> {{ element.Country }} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="Country" class="bg-dark text-light"> Country </th>
+    <td mat-cell *matCellDef="let element" class="text-left cursor-pointer bg-dark text-light" (click)="countryClick.emit(element.Slug)"> {{ element.Country }} </td>
   </ng-container>
 
   <ng-container matColumnDef="NewConfirmed">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-cases" > New Cases </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-cases th-right" > New Cases </th>
     <td mat-cell *matCellDef="let element;" class="bg-cases"> {{ element.NewConfirmed }}</td>
   </ng-container>
 
   <ng-container matColumnDef="TotalConfirmed">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-cases"> Total Cases </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-cases th-right"> Total Cases </th>
     <td mat-cell *matCellDef="let element;" class="bg-cases"> {{ element.TotalConfirmed }}</td>
   </ng-container>
 
   <ng-container matColumnDef="NewRecovered">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-recovered"> New Recovered </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-recovered th-right"> New Recovered </th>
     <td mat-cell *matCellDef="let element;" class="bg-recovered"> {{ element.NewRecovered }}</td>
   </ng-container>
 
   <ng-container matColumnDef="TotalRecovered">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-recovered"> Total Recovered </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-recovered th-right"> Total Recovered </th>
     <td mat-cell *matCellDef="let element;" class="bg-recovered"> {{ element.TotalRecovered }}</td>
   </ng-container>
 
   <ng-container matColumnDef="NewDeaths">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-deaths"> New Deaths </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-deaths th-right"> New Deaths </th>
     <td mat-cell *matCellDef="let element;" class="bg-deaths"> {{ element.NewDeaths }}</td>
   </ng-container>
 
   <ng-container matColumnDef="TotalDeaths">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-deaths"> Total Deaths </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-deaths th-right"> Total Deaths </th>
     <td mat-cell *matCellDef="let element;" class="bg-deaths"> {{ element.TotalDeaths }}</td>
   </ng-container>
 

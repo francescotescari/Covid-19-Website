@@ -11,6 +11,7 @@ export class LoadmanagerService {
 
   private registeredSubjects = new Set();
   private completionSubject = new Subject();
+  private setLoadSubject = new Subject();
 
   registerLoader(): Subject<void> {
     const subject = new Subject<void>();
@@ -38,6 +39,14 @@ export class LoadmanagerService {
       }
     });
     return subject;
+  }
+
+  setLoadObservable(): Observable<unknown> {
+    return this.setLoadSubject;
+  }
+
+  notifySetLoad(): void {
+    this.setLoadSubject.next(0);
   }
 
 }

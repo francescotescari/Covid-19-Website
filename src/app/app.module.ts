@@ -18,13 +18,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSortModule} from '@angular/material/sort';
 import { CountriesTableComponent } from './page-main/elements/countries-table/countries-table.component';
-import { CountrypageComponent } from './countrypage/countrypage.component';
+import { CountryPageComponent } from './countrypage/country-page.component';
 import { CoviddataTableComponent } from './page-main/elements/coviddata-table/coviddata-table.component';
-import { CoviddataMainComponent } from './page-main/coviddata-main/coviddata-main.component';
+import { CovidDataMainComponent } from './page-main/coviddata-main/covid-data-main.component';
 import {ChartsModule} from 'ng2-charts';
 import { PieChartComponent } from './page-main/elements/pie-chart/pie-chart.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {LoadedNotifyDirective} from './page-main/section/loaded-notify.directive';
+import { DailyBarChartComponent } from './page-main/elements/daily-bar-chart/daily-bar-chart.component';
+import { DailyLineChartComponent } from './page-main/elements/daily-line-chart/daily-line-chart.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -33,11 +36,14 @@ import {LoadedNotifyDirective} from './page-main/section/loaded-notify.directive
     HomepageComponent,
     SectionComponent,
     CountriesTableComponent,
-    CountrypageComponent,
+    CountryPageComponent,
     CoviddataTableComponent,
-    CoviddataMainComponent,
+    CovidDataMainComponent,
     PieChartComponent,
-    LoadedNotifyDirective
+    LoadedNotifyDirective,
+    DailyBarChartComponent,
+    DailyLineChartComponent,
+    DailyLineChartComponent
 
   ],
   imports: [
@@ -54,6 +60,7 @@ import {LoadedNotifyDirective} from './page-main/section/loaded-notify.directive
     MatSortModule,
     ChartsModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

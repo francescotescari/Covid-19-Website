@@ -1,0 +1,31 @@
+<div class="text-center">
+  <h1>COVID-19</h1>
+  <h3 class="text-black-50">Live update and statistics</h3>
+</div>
+
+<div *ngIf="loading">LOADING...</div>
+
+<div *ngIf="!loading">
+
+  <div class="list-group-item-dark p-2 text-center my-4" *ngIf="countryName != null && countryName != 'Worldwide'">
+    <a [routerLink]="['/']">Worldwide</a> -> {{countryName}}
+  </div>
+
+  <app-section [title]="'Corona Virus Summary '+countryName" class="mat-elevation-z8">
+    <app-coviddata-table [dataSource]="summaryTableObservable"></app-coviddata-table>
+  </app-section>
+
+  <app-section [title]="'Corona Virus Cases Distribution '+countryName">
+    <app-pie-chart [dataSource]="pieChartData" [labels]="pieChartLabels"></app-pie-chart>
+  </app-section>
+
+  <app-section [title]="'Daily Corona Virus Cases '+countryName">
+    <app-daily-bar-chart [dataSource]="diffDataSource"></app-daily-bar-chart>
+  </app-section>
+
+  <app-section [title]="'Total Corona Virus Cases '+countryName">
+    <app-daily-line-chart [dataSource]="dataSource"></app-daily-line-chart>
+  </app-section>
+
+
+</div>

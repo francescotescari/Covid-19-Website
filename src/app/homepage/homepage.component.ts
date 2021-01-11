@@ -9,12 +9,18 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import {ApiSummaryModel, CoviddataService} from '../coviddata.service';
+import {ApiSummaryModel, CovidDataService} from '../covid-data.service';
 import {map, tap} from 'rxjs/operators';
 import {Observable, of, ReplaySubject} from 'rxjs';
-import {CountriesEntryModel} from '../page-main/countries-entry.model';
 import {Router} from '@angular/router';
 import {LoadmanagerService} from '../loadmanager.service';
+import {
+  CountryDiffEntry,
+  CovidSimpleEntry,
+  DatedCovidDiffEntry,
+  DatedCovidSimpleEntry,
+  diffToSimpleMapperDated
+} from '../covid-data-models';
 
 
 @Component({
@@ -23,26 +29,36 @@ import {LoadmanagerService} from '../loadmanager.service';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements AfterViewInit, OnInit {
-  globalDataSource: Observable<CountriesEntryModel>;
-  countriesTableObservable: Observable<Array<CountriesEntryModel>>;
+  globalDataSource: Observable<DatedCovidSimpleEntry[]>;
+  countriesTableObservable: Observable<CountryDiffEntry[]>;
   private summaryObservable: ReplaySubject<ApiSummaryModel>;
 
-  constructor(private apis: CoviddataService, public router: Router, private loadManager: LoadmanagerService) {
+  constructor(private apis: CovidDataService, public router: Router, private loadManager: LoadmanagerService) {
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.apis.fetchSummary().subscribe(this.summaryObservable);
-    }, 3000);
+    }, 0);
 
   }
 
   ngOnInit(): void {
     this.summaryObservable = new ReplaySubject<ApiSummaryModel>();
-    this.globalDataSource = this.summaryObservable.pipe(map(value => value.Global as CountriesEntryModel));
-    this.countriesTableObservable = this.summaryObservable.pipe(map(value => CoviddataService.GlobalCountryDataMapper(value)));
+    this.globalDataSource = this.summaryObservable.pipe(map(value => {
+      return diffToSimpleMapperDated([value.Global as DatedCovidDiffEntry]);
+    }));
+    this.countriesTableObservable = this.summaryObservable.pipe(map(value => CovidDataService.GlobalCountryDataMapper(value)));
     const sub = this.loadManager.registerLoader();
     this.summaryObservable.subscribe(value => sub.complete());
+  }
+
+  onCountryClick(country): void {
+    this.loadManager.notifySetLoad();
+    setTimeout(() => {
+      this.router.navigate(['/country/', country]);
+    }, 200);
+
   }
 
 

@@ -17,6 +17,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 
+.th-right .mat-sort-header-container {
+  flex-direction: row-reverse;
+}
+.th-right .mat-sort-header-container > * {
+  margin-left: 6px;
+}
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border: 2px solid white;
+}
+tr.mat-header-row {
+  border-bottom: 4px solid white;
+  cursor: pointer;
+}
+
+.v-center {
+  vertical-align: middle;
+}
+
 
 /* cursors */
 .cursor-alias {cursor: alias;}

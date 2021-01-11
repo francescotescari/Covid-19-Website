@@ -1,3 +1,17 @@
 .faded {
   opacity: 0;
 }
+.an-box {
+  transition: 200ms ease-in-out;
+  transform: translateY(0);
+  opacity: 1;
+}
+.an-box.an-hidden.an-down {
+  transform: translateY(100px);
+  opacity: 0;
+}
+.an-box.an-hidden.an-up {
+  transform: translateY(-100px);
+  opacity: 0;
+}
+

@@ -4,8 +4,26 @@
 </mat-progress-bar>
 <main>
   <div class="container">
-    <router-outlet (activate)="routerCallback()"></router-outlet>
+    <div style="overflow-y: hidden">
+
+      <div [class]="{'an-hidden': loading}" class="an-box an-down px-3">
+        <router-outlet (activate)="routerCallback()"></router-outlet>
+      </div>
+    </div>
   </div>
 
 </main>
+<div [class]="{'an-hidden': !loading}" class="an-box an-up px-3 position-fixed w-100 display-4">
+  <div class="d-flex text-center justify-content-center align-items-center">
+    <div>
+      <p>Loading data...</p>
+
+      <div class="d-flex justify-content-center">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+
+
+  </div>
+</div>
 

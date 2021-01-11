@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {COLOR_CRD} from '../../data';
 import {Observable} from 'rxjs';
-import {CountriesEntryModel} from '../../countries-entry.model';
 import {SingleDataSet} from 'ng2-charts';
+import {ChartOptions} from 'chart.js';
 
 @Component({
   selector: 'app-pie-chart',
@@ -18,6 +18,16 @@ export class PieChartComponent implements OnInit {
     backgroundColor: COLOR_CRD,
     borderColor: COLOR_CRD
   }];
+  pieChartOptions: ChartOptions = {
+    responsive: true,
+    animation: {
+      duration: 0,
+    },
+    hover: {
+      animationDuration: 0,
+    },
+    responsiveAnimationDuration: 0
+  };
 
 
   ngOnInit(): void {

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CountrypageComponent } from './countrypage.component';
+import { CovidDataMainComponent } from './covid-data-main.component';
 
-describe('CountrypageComponent', () => {
-  let component: CountrypageComponent;
-  let fixture: ComponentFixture<CountrypageComponent>;
+describe('CoviddataMainComponent', () => {
+  let component: CovidDataMainComponent;
+  let fixture: ComponentFixture<CovidDataMainComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CountrypageComponent ]
+      declarations: [ CovidDataMainComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CountrypageComponent);
+    fixture = TestBed.createComponent(CovidDataMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

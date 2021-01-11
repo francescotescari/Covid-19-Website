@@ -36,6 +36,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadService.resetCompletion();
+    this.loadService.setLoadObservable().subscribe(value => this.loading = true);
   }
 
   routerCallback(): void {
