@@ -2,12 +2,20 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from './covid-data-models';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {tap} from 'rxjs/operators';
+import {FirestoreDocCache, LocalStorageCache, MultiCacheLevel} from './caching';
 
 
 export interface ApiSummaryModel {
   Global: CovidDiffEntry;
   Countries: Array<CountryDiffEntry>;
+}
+
+function timeSinceStartOfTheDay(): number {
+  const midnightDate = new Date();
+  midnightDate.setHours(0, 0, 0);
+  return new Date().getTime() - midnightDate.getTime();
 }
 
 
@@ -33,18 +41,23 @@ export class CovidDataService {
       {key: 'New Deaths', value: data.NewDeaths},
       {key: 'Mortality Rate', value: (data.TotalDeaths / data.TotalConfirmed * 100).toFixed(2) + '%'}
     ];
-  };
+  }
 
   static GlobalCountryDataMapper = data => data.Countries;
 
 
   fetchSummary(): Observable<ApiSummaryModel> {
-    return this.http.get<ApiSummaryModel>('https://api.covid19api.com/summary', {responseType: 'json'});
+    return new LocalStorageCache<ApiSummaryModel>('').getOrSet('data_summary', Math.min(timeSinceStartOfTheDay(), 3600 * 1000),
+      () => this.http.get<ApiSummaryModel>('https://api.covid19api.com/summary', {responseType: 'json'}));
   }
 
   fetchDailyCountry(country: string): Observable<ApiCountryCovidEntry[]> {
+    const doc = this.firestore.collection('countries').doc(country);
+    const cache = new MultiCacheLevel<ApiCountryCovidEntry[]>(new LocalStorageCache('countries_'), new FirestoreDocCache(doc));
 
-    return this.http.get<ApiCountryCovidEntry[]>('https://api.covid19api.com/total/dayone/country/' + country, {responseType: 'json'});
+    return cache.getOrSet(country, timeSinceStartOfTheDay(),
+      () => this.http.get<ApiCountryCovidEntry[]>('https://api.covid19api.com/total/dayone/country/' + country, {responseType: 'json'}));
+
   }
 
 
