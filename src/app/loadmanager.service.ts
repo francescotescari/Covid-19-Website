@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadmanagerService {
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   private registeredSubjects = new Set();
@@ -47,6 +48,13 @@ export class LoadmanagerService {
 
   notifySetLoad(): void {
     this.setLoadSubject.next(0);
+  }
+
+  public rerouteAfterLoad(commands): void {
+    this.notifySetLoad();
+    setTimeout(() => {
+      this.router.navigate(commands);
+    }, 200);
   }
 
 }

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from './covid-data-models';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 
 export interface ApiSummaryModel {
@@ -16,7 +17,7 @@ export interface ApiSummaryModel {
 export class CovidDataService {
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private firestore: AngularFirestore) {
 
   }
 
@@ -42,6 +43,7 @@ export class CovidDataService {
   }
 
   fetchDailyCountry(country: string): Observable<ApiCountryCovidEntry[]> {
+
     return this.http.get<ApiCountryCovidEntry[]>('https://api.covid19api.com/total/dayone/country/' + country, {responseType: 'json'});
   }
 

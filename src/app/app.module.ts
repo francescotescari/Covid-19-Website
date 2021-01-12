@@ -24,7 +24,6 @@ import { CovidDataMainComponent } from './page-main/coviddata-main/covid-data-ma
 import {ChartsModule} from 'ng2-charts';
 import { PieChartComponent } from './page-main/elements/pie-chart/pie-chart.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {LoadedNotifyDirective} from './page-main/section/loaded-notify.directive';
 import { DailyBarChartComponent } from './page-main/elements/daily-bar-chart/daily-bar-chart.component';
 import { DailyLineChartComponent } from './page-main/elements/daily-line-chart/daily-line-chart.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -40,7 +39,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     CoviddataTableComponent,
     CovidDataMainComponent,
     PieChartComponent,
-    LoadedNotifyDirective,
     DailyBarChartComponent,
     DailyLineChartComponent,
     DailyLineChartComponent

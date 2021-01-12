@@ -3,15 +3,19 @@
 }
 .an-box {
   transition: 200ms ease-in-out;
-  transform: translateY(0);
+  transform: scaleY(1);
   opacity: 1;
 }
 .an-box.an-hidden.an-down {
-  transform: translateY(100px);
+  transform:  translateY(-100px);
   opacity: 0;
 }
 .an-box.an-hidden.an-up {
-  transform: translateY(-100px);
+  transform:  translateY(100px);
   opacity: 0;
 }
 
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}

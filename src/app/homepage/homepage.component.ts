@@ -54,10 +54,7 @@ export class HomepageComponent implements AfterViewInit, OnInit {
   }
 
   onCountryClick(country): void {
-    this.loadManager.notifySetLoad();
-    setTimeout(() => {
-      this.router.navigate(['/country/', country]);
-    }, 200);
+    this.loadManager.rerouteAfterLoad(['/country/', country]);
 
   }
 

@@ -1,31 +1,41 @@
 <div class="text-center">
-  <h1>COVID-19</h1>
+  <h1 class="mt-2">COVID-19</h1>
   <h3 class="text-black-50">Live update and statistics</h3>
 </div>
 
-<div *ngIf="loading">LOADING...</div>
+<div *ngIf="loading">Loading, please wait...</div>
 
 <div *ngIf="!loading">
 
   <div class="list-group-item-dark p-2 text-center my-4" *ngIf="countryName != null && countryName != 'Worldwide'">
-    <a [routerLink]="['/']">Worldwide</a> -> {{countryName}}
+    <a href="/" (click)="onHomeClick();$event.preventDefault();$event.stopPropagation()">Worldwide</a>
+    -> {{countryName}}
   </div>
 
-  <app-section [title]="'Corona Virus Summary '+countryName" class="mat-elevation-z8">
+  <app-section [title]="'Corona Virus Summary '+countryDisplayName()" class="mat-elevation-z8">
     <app-coviddata-table [dataSource]="summaryTableObservable"></app-coviddata-table>
   </app-section>
 
-  <app-section [title]="'Corona Virus Cases Distribution '+countryName">
+  <app-section [title]="'Corona Virus Cases Distribution '+countryDisplayName()">
     <app-pie-chart [dataSource]="pieChartData" [labels]="pieChartLabels"></app-pie-chart>
   </app-section>
 
-  <app-section [title]="'Daily Corona Virus Cases '+countryName">
+  <app-section [title]="'Daily Corona Virus Cases '+countryDisplayName()">
     <app-daily-bar-chart [dataSource]="diffDataSource"></app-daily-bar-chart>
   </app-section>
 
-  <app-section [title]="'Total Corona Virus Cases '+countryName">
+  <app-section [title]="'Total Corona Virus Cases '+countryDisplayName()">
     <app-daily-line-chart [dataSource]="dataSource"></app-daily-line-chart>
   </app-section>
 
+  <ng-content></ng-content>
 
+  <div class="p-2 mb-3 px-sm-0">
+    <div class="foot-box text-center p-2">
+      Data source: <a href="https://covid19api.com/">COVID-19 API / Johns Hopkins CSSE</a>
+    </div>
+
+  </div>
 </div>
+
+

@@ -11,6 +11,7 @@ import {map} from 'rxjs/operators';
 import {CovidDataService} from '../../covid-data.service';
 import {Label, SingleDataSet} from 'ng2-charts';
 import {Router} from '@angular/router';
+import {LoadmanagerService} from '../../loadmanager.service';
 
 @Component({
   selector: 'app-coviddata-main',
@@ -29,7 +30,7 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
   countrySlug: string;
   loading = true;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, public loadService: LoadmanagerService) {
   }
 
   ngOnInit(): void {
@@ -47,6 +48,18 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.dataSource.subscribe(next => this.loading = false);
+  }
+
+  onHomeClick(): void {
+    this.loadService.rerouteAfterLoad(['/']);
+  }
+
+  countryDisplayName(): string {
+    if (this.countryName == null || this.countryName === 'Worldwide') {
+      return 'Worldwide';
+    } else {
+      return 'in ' + this.countryName;
+    }
   }
 
 }
