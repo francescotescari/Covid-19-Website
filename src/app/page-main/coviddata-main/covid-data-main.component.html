@@ -1,5 +1,8 @@
 <div class="text-center">
-  <h1 class="mt-2">COVID-19</h1>
+  <div class="d-flex justify-content-center align-items-center">
+    <h1 class="mt-2">COVID-19</h1>
+    <img src="https://firebasestorage.googleapis.com/v0/b/covid19-ft-eurecom.appspot.com/o/icon.svg?alt=media&token=616da823-a716-46c6-8b40-6eb6bb0e1d07">
+  </div>
   <h3 class="text-black-50">Live update and statistics</h3>
 </div>
 
@@ -8,7 +11,7 @@
 <div *ngIf="!loading">
 
   <div class="list-group-item-dark p-2 text-center my-4" *ngIf="countryName != null && countryName != 'Worldwide'">
-    <a href="/" (click)="onHomeClick();$event.preventDefault();$event.stopPropagation()">Worldwide</a>
+    <a appLoadRouterLink="/">Worldwide</a>
     -> {{countryName}}
   </div>
 
@@ -30,9 +33,9 @@
 
   <ng-content></ng-content>
 
-  <div class="p-2 mb-3 px-sm-0">
-    <div class="foot-box text-center p-2">
-      Data source: <a href="https://covid19api.com/">COVID-19 API / Johns Hopkins CSSE</a>
+  <div class="p-2 mb-3 px-md-0">
+    <div class="foot-box text-center p-2 mat-elevation-z8-lg">
+      Data source: <a href="https://covid19api.com/" target="_blank">COVID-19 API / Johns Hopkins CSSE</a>
     </div>
 
   </div>

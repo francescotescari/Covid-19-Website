@@ -1,13 +1,43 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  <div class="container-fluid container-lg px-0 px-md-3">
+    <div class="d-flex align-items-center">
+      <div class="d-md-none">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div class="text-center text-md-left flex-grow-1 flex-md-grow-0 icon-div menu-buttons">
+        <a mat-button  appLoadRouterLink="/" class="d-flex align-items-center">
+          <img src="https://firebasestorage.googleapis.com/v0/b/covid19-ft-eurecom.appspot.com/o/icon_white.svg?alt=media&token=e3d02200-29b1-4d23-ac1d-c7d55a5fb0c3"  alt="Icon"/>
+        </a>
+      </div>
+      <div class="d-md-flex d-none align-items-center menu-buttons">
+        <span class="example-spacer"></span>
+        <a mat-button appLoadRouterLink="/">Home</a>
+        <a mat-button appLoadRouterLink="/news">News</a>
+      </div>
+
+      <div class="d-md-none invisible">
+        <button mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
 </mat-toolbar>
+<mat-sidenav-container class="example-container">
+
+  <mat-sidenav #sidenav mode="over" opened="false">
+    <div>
+      <a mat-button routerLink="/about-us">About us</a>
+      <a mat-button routerLink="/prices">Prices</a>
+      <a mat-button routerLink="/start-page">Start page</a>
+      <a mat-button routerLink="/offer">Offer</a>
+      <a mat-button routerLink="/contact">Contact</a>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

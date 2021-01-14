@@ -10,23 +10,26 @@ import {environment} from '../environments/environment';
 import {HeaderComponent} from './header/header.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {HttpClientModule} from '@angular/common/http';
-import { SectionComponent } from './page-main/section/section.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {SectionComponent} from './page-main/section/section.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSortModule} from '@angular/material/sort';
-import { CountriesTableComponent } from './page-main/elements/countries-table/countries-table.component';
-import { CountryPageComponent } from './countrypage/country-page.component';
-import { CoviddataTableComponent } from './page-main/elements/coviddata-table/coviddata-table.component';
-import { CovidDataMainComponent } from './page-main/coviddata-main/covid-data-main.component';
+import {CountriesTableComponent} from './page-main/elements/countries-table/countries-table.component';
+import {CountryPageComponent} from './countrypage/country-page.component';
+import {CoviddataTableComponent} from './page-main/elements/coviddata-table/coviddata-table.component';
+import {CovidDataMainComponent} from './page-main/coviddata-main/covid-data-main.component';
 import {ChartsModule} from 'ng2-charts';
-import { PieChartComponent } from './page-main/elements/pie-chart/pie-chart.component';
+import {PieChartComponent} from './page-main/elements/pie-chart/pie-chart.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { DailyBarChartComponent } from './page-main/elements/daily-bar-chart/daily-bar-chart.component';
-import { DailyLineChartComponent } from './page-main/elements/daily-line-chart/daily-line-chart.component';
+import {DailyBarChartComponent} from './page-main/elements/daily-bar-chart/daily-bar-chart.component';
+import {DailyLineChartComponent} from './page-main/elements/daily-line-chart/daily-line-chart.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {AppLoadRouterLinkDirective} from './loadmanager.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     PieChartComponent,
     DailyBarChartComponent,
     DailyLineChartComponent,
-    DailyLineChartComponent
+    DailyLineChartComponent,
+    AppLoadRouterLinkDirective
 
   ],
   imports: [
@@ -59,6 +63,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ChartsModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    FlexLayoutModule,
+    MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

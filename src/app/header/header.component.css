@@ -1,0 +1,14 @@
+.menu-buttons > a {
+  font-size: large;
+  text-decoration: none;
+  color: white;
+}
+.menu-buttons, .menu-buttons a {
+  height: 100%;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+}
+.mat-toolbar div {
+  height: 100%;
+}

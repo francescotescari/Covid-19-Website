@@ -1,32 +1,32 @@
-<app-header></app-header>
+<app-header>
 
-<mat-progress-bar color="accent" mode="indeterminate" [class]="{'invisible': !loading}">
-</mat-progress-bar>
-<main>
-  <div class="container p-sm-0">
-    <div style="overflow-y: hidden">
+  <mat-progress-bar color="accent" mode="indeterminate" [class]="{'invisible': !loading}">
+  </mat-progress-bar>
+  <main>
+    <div class="container-fluid container-lg">
+      <div style="overflow-y: hidden">
 
-      <div [class]="{'an-hidden': loading}" class="an-box an-down px-3">
-        <router-outlet (activate)="routerCallback()"></router-outlet>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<div [class]="{'an-hidden': !loading}" class="an-box an-up position-fixed w-100">
-  <div class="d-flex text-center justify-content-center align-items-center">
-    <div>
-      <p class="h4">Loading data...</p>
-
-      <div class="d-flex justify-content-center pt-3">
-        <mat-spinner [diameter]="80" [strokeWidth]="4"></mat-spinner>
+        <div [class]="{'an-hidden': loading}" class="an-box an-down px-3">
+          <router-outlet (activate)="routerCallback()"></router-outlet>
+        </div>
       </div>
     </div>
 
+  </main>
 
+  <div [class]="{'an-hidden': !loading}" class="an-box an-up position-fixed w-100">
+    <div class="d-flex text-center justify-content-center align-items-center">
+      <div>
+        <p class="h4">Loading data...</p>
+
+        <div class="d-flex justify-content-center pt-3">
+          <mat-spinner [diameter]="80" [strokeWidth]="4"></mat-spinner>
+        </div>
+      </div>
+
+
+    </div>
   </div>
-</div>
-
+</app-header>
 
 

@@ -55,7 +55,6 @@ export class HomepageComponent implements AfterViewInit, OnInit {
 
   onCountryClick(country): void {
     this.loadManager.rerouteAfterLoad(['/country/', country]);
-
   }
 
 

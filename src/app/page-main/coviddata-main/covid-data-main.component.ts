@@ -50,10 +50,6 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
     this.dataSource.subscribe(next => this.loading = false);
   }
 
-  onHomeClick(): void {
-    this.loadService.rerouteAfterLoad(['/']);
-  }
-
   countryDisplayName(): string {
     if (this.countryName == null || this.countryName === 'Worldwide') {
       return 'Worldwide';

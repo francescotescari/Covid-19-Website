@@ -1,6 +1,33 @@
-import {Injectable} from '@angular/core';
+import {Directive, ElementRef, HostListener, Injectable, Input, OnInit} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {Router} from '@angular/router';
+
+
+@Directive({
+  selector: '[appLoadRouterLink]',
+})
+
+export class AppLoadRouterLinkDirective implements OnInit {
+
+  @Input('appLoadRouterLink') loadRouterLink: string;
+
+  constructor(private elr: ElementRef, private loadManager: LoadmanagerService) {
+
+  }
+
+  @HostListener('click', ['$event']) onClick(event: MouseEvent): boolean {
+    console.log(this.loadRouterLink);
+    event.preventDefault();
+    event.stopPropagation();
+    this.loadManager.rerouteAfterLoad([this.loadRouterLink]);
+    return false;
+  }
+
+  ngOnInit(): void {
+    this.elr.nativeElement.href = this.loadRouterLink;
+  }
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +37,10 @@ export class LoadmanagerService {
   constructor(private router: Router) {
   }
 
+
   private registeredSubjects = new Set();
-  private completionSubject = new Subject();
   private setLoadSubject = new Subject();
+  private removeLoadSubject = new Subject();
 
   registerLoader(): Subject<void> {
     const subject = new Subject<void>();
@@ -20,7 +48,9 @@ export class LoadmanagerService {
     subject.subscribe({
       complete: () => {
         this.registeredSubjects.delete(subject);
-        this.completionSubject.next(subject);
+        if (this.registeredSubjects.size === 0) {
+          this.removeLoadSubject.next(0);
+        }
       }
     });
     return subject;
@@ -28,22 +58,15 @@ export class LoadmanagerService {
 
   resetCompletion(): void {
     this.registeredSubjects.clear();
-    this.completionSubject.complete();
-    this.completionSubject = new Subject<Subject<void>>();
   }
 
-  allLoadedCompletion(): Observable<void> {
-    const subject = new ReplaySubject<void>();
-    this.completionSubject.subscribe(value => {
-      if (this.registeredSubjects.size === 0) {
-        subject.complete();
-      }
-    });
-    return subject;
-  }
 
   setLoadObservable(): Observable<unknown> {
     return this.setLoadSubject;
+  }
+
+  removeLoadObservable(): Observable<unknown> {
+    return this.removeLoadSubject;
   }
 
   notifySetLoad(): void {
@@ -53,7 +76,11 @@ export class LoadmanagerService {
   public rerouteAfterLoad(commands): void {
     this.notifySetLoad();
     setTimeout(() => {
-      this.router.navigate(commands);
+      this.router.navigate(commands).then(value => {
+        if (!value) {
+          this.removeLoadSubject.next(0);
+        }
+      });
     }, 200);
   }
 

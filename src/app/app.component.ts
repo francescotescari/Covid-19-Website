@@ -19,7 +19,7 @@ import {LoadmanagerService} from './loadmanager.service';
   styleUrls: ['./app.component.css'],
 
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
 
   loading = true;
   private loadService: LoadmanagerService;
@@ -28,23 +28,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.loadService = loadService;
   }
 
-  ngAfterViewInit(): void {
-    this.loadService.allLoadedCompletion().subscribe({
-      complete: () => this.loading = false
-    });
-  }
 
   ngOnInit(): void {
     this.loadService.resetCompletion();
     this.loadService.setLoadObservable().subscribe(value => this.loading = true);
+    this.loadService.removeLoadObservable().subscribe(value => this.loading = false);
   }
 
   routerCallback(): void {
+    console.log('Rerouting');
     this.loading = true;
     this.loadService.resetCompletion();
-    this.loadService.allLoadedCompletion().subscribe({
-      complete: () => this.loading = false
-    });
   }
 
 }
