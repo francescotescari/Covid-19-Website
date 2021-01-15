@@ -1,0 +1,22 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label *ngIf="label != null">
+    {{label}}
+  </mat-label>
+  <input #inp matInput
+         [matAutocomplete]="auto"
+         [formControl]="countryFormControl"
+         (focusout)="countryFormControl.setValue(selectedCountry.Country)"
+         (click)="inp.select()"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (closed)="countryFormControl.setValue(selectedCountry.Country)"
+                    (optionSelected)="selectCountry($event.option.value)">
+    <mat-option *ngFor="let country of filteredOptions | async" [value]="country">
+      {{country.Country}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+
+
+
+

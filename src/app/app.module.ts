@@ -30,6 +30,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {AppLoadRouterLinkDirective} from './loadmanager.service';
+import {NewsComponent} from './news/news.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {ReactiveFormsModule} from '@angular/forms';
+import {CountrySelectorComponent} from './country-selector/country-selector.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -45,7 +53,9 @@ import {AppLoadRouterLinkDirective} from './loadmanager.service';
     DailyBarChartComponent,
     DailyLineChartComponent,
     DailyLineChartComponent,
-    AppLoadRouterLinkDirective
+    AppLoadRouterLinkDirective,
+    NewsComponent,
+    CountrySelectorComponent
 
   ],
   imports: [
@@ -65,9 +75,15 @@ import {AppLoadRouterLinkDirective} from './loadmanager.service';
     MatProgressSpinnerModule,
     FlexLayoutModule,
     MatSidenavModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule {
 }

@@ -3,7 +3,7 @@ import {ApiSummaryModel, CovidDataService} from '../covid-data.service';
 import {combineLatest, forkJoin, Observable, ReplaySubject, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
-import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from '../covid-data-models';
+import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from '../covid-data.models';
 import {LoadmanagerService} from '../loadmanager.service';
 
 

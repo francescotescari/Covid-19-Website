@@ -2,7 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild
 import {Observable} from 'rxjs';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
-import {CountryDiffEntry} from '../../../covid-data-models';
+import {CountryDiffEntry} from '../../../covid-data.models';
 
 @Component({
   selector: 'app-countries-table',

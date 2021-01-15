@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from './covid-data-models';
+import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from './covid-data.models';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {tap} from 'rxjs/operators';
 import {FirestoreDocCache, LocalStorageCache, MultiCacheLevel} from './caching';
@@ -10,6 +10,12 @@ import {FirestoreDocCache, LocalStorageCache, MultiCacheLevel} from './caching';
 export interface ApiSummaryModel {
   Global: CovidDiffEntry;
   Countries: Array<CountryDiffEntry>;
+}
+
+export interface ApiCountryModel {
+  Country: string;
+  Slug: string;
+  ISO2: string;
 }
 
 function timeSinceStartOfTheDay(): number {
@@ -41,7 +47,7 @@ export class CovidDataService {
       {key: 'New Deaths', value: data.NewDeaths},
       {key: 'Mortality Rate', value: (data.TotalDeaths / data.TotalConfirmed * 100).toFixed(2) + '%'}
     ];
-  }
+  };
 
   static GlobalCountryDataMapper = data => data.Countries;
 
@@ -58,6 +64,11 @@ export class CovidDataService {
     return cache.getOrSet(country, timeSinceStartOfTheDay(),
       () => this.http.get<ApiCountryCovidEntry[]>('https://api.covid19api.com/total/dayone/country/' + country, {responseType: 'json'}));
 
+  }
+
+  fetchCountries(): Observable<ApiCountryModel[]> {
+    return new LocalStorageCache<ApiCountryModel[]>('').getOrSet('countries_data', Math.min(timeSinceStartOfTheDay(), 600 * 1000),
+      () => this.http.get<ApiCountryModel[]>('https://api.covid19api.com/countries', {responseType: 'json'}));
   }
 
 

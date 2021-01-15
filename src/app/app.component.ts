@@ -13,6 +13,19 @@ import {fadeAnimation} from './animations';
 import {LoadmanagerService} from './loadmanager.service';
 
 
+function debounce<Params extends any[]>(
+  func: (...args: Params) => any,
+  timeout: number,
+): (...args: Params) => void {
+  let timer;
+  return (...args: Params) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, timeout);
+  };
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,6 +35,7 @@ import {LoadmanagerService} from './loadmanager.service';
 export class AppComponent implements OnInit {
 
   loading = true;
+  loaded = false;
   private loadService: LoadmanagerService;
 
   constructor(loadService: LoadmanagerService) {
@@ -30,9 +44,18 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const setLoaded = debounce(() => this.loaded = true, 200);
+
     this.loadService.resetCompletion();
-    this.loadService.setLoadObservable().subscribe(value => this.loading = true);
-    this.loadService.removeLoadObservable().subscribe(value => this.loading = false);
+    this.loadService.setLoadObservable().subscribe(value => {
+      this.loading = true;
+      this.loaded = false;
+    });
+    this.loadService.removeLoadObservable().subscribe(value => {
+      this.loading = false;
+      setLoaded();
+    });
+
   }
 
   routerCallback(): void {

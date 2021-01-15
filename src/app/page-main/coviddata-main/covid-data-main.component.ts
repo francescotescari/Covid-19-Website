@@ -6,7 +6,7 @@ import {
   DatedCovidSimpleEntry,
   simpleToDiffMapper,
   simpleToDiffMapperDated
-} from '../../covid-data-models';
+} from '../../covid-data.models';
 import {map} from 'rxjs/operators';
 import {CovidDataService} from '../../covid-data.service';
 import {Label, SingleDataSet} from 'ng2-charts';

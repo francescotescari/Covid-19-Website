@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {DatedCovidDiffEntry, DatedCovidSimpleEntry} from '../../../covid-data-models';
+import {DatedCovidDiffEntry, DatedCovidSimpleEntry} from '../../../covid-data.models';
 import {Label} from 'ng2-charts';
 import {map} from 'rxjs/operators';
 import {ChartDataSets, ChartOptions} from 'chart.js';

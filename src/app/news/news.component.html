@@ -1,0 +1,48 @@
+<div *ngIf="loginName != null">
+  <h3 class="py-3">Add a news about the COVID-19</h3>
+
+  <div>
+    <form #f="ngForm" ngForm (ngSubmit)="$event.preventDefault(); $event.stopPropagation();" [formGroup]="formGroup">
+      <p>
+        <app-country-selector appearance="outline" [countriesSource]="countriesDataSubject" [formGroup]="formGroup"
+                              label="Country"></app-country-selector>
+      </p>
+      <p>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>News Title</mat-label>
+          <input matInput required [formControl]="formControls.title">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Content</mat-label>
+          <textarea matInput required [formControl]="formControls.text"></textarea>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Author</mat-label>
+          <input matInput required readonly disabled [value]="loginName"/>
+          <div matSuffix class="align-self-center">
+            <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+          </div>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <button type="button" mat-raised-button class="submit" color="primary" (click)="onSubmit()"
+                [disabled]="!formGroup.valid">Upload
+        </button>
+      </p>
+
+    </form>
+  </div>
+</div>
+<div *ngIf="loginName == null">
+  <h3 class="py-3">You must login to access this section</h3>
+
+  <button mat-raised-button (click)="login()" color="primary">Login with Google</button>
+</div>
+
+
+

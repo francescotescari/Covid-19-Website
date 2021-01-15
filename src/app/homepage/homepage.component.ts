@@ -20,7 +20,7 @@ import {
   DatedCovidDiffEntry,
   DatedCovidSimpleEntry,
   diffToSimpleMapperDated
-} from '../covid-data-models';
+} from '../covid-data.models';
 
 
 @Component({

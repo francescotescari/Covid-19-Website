@@ -97,6 +97,10 @@ export class LocalStorageCache<T> extends CacheLevel<T> {
     localStorage.setItem(this.keyPrefix + key, JSON.stringify(value));
   }
 
+  remove(key: string): void {
+    localStorage.removeItem(this.keyPrefix + key);
+  }
+
 }
 
 export class FirestoreDocCache<T> extends CacheLevel<T> {

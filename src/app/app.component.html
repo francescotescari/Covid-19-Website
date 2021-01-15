@@ -14,7 +14,7 @@
 
   </main>
 
-  <div [class]="{'an-hidden': !loading}" class="an-box an-up position-fixed w-100">
+  <div [class]="{'an-hidden': !loading}" class="an-box an-up position-fixed w-100" *ngIf="!loaded">
     <div class="d-flex text-center justify-content-center align-items-center">
       <div>
         <p class="h4">Loading data...</p>
