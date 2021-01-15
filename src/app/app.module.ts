@@ -38,6 +38,8 @@ import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CountrySelectorComponent} from './country-selector/country-selector.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatCardModule} from '@angular/material/card';
+import { NewsListingComponent } from './news-listing/news-listing.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     DailyLineChartComponent,
     AppLoadRouterLinkDirective,
     NewsComponent,
-    CountrySelectorComponent
+    CountrySelectorComponent,
+    NewsListingComponent
 
   ],
   imports: [
@@ -80,6 +83,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

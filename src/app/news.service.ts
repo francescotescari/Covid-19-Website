@@ -2,13 +2,20 @@ import {Injectable} from '@angular/core';
 import firebase from 'firebase';
 import {AngularFirestore, DocumentReference} from '@angular/fire/firestore';
 import {AuthService} from './auth.service';
-import {Observable, ReplaySubject} from 'rxjs';
+import {from, Observable, ReplaySubject} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 
-interface NewsEntry {
+export interface NewsEntry {
   title: string;
   content: string;
   author: string;
   date: number;
+  uimg: string;
+}
+
+export interface DocNewsEntry {
+  id: string;
+  data: NewsEntry;
 }
 
 @Injectable({
@@ -17,7 +24,7 @@ interface NewsEntry {
 export class NewsService {
 
   private countryId(country: string): string {
-    return country || 'world';
+    return 'news/countries/' + (country || 'world');
   }
 
   constructor(private firestore: AngularFirestore, private auth: AuthService) {
@@ -35,13 +42,31 @@ export class NewsService {
         title,
         content,
         author: user.displayName,
-        date: new Date().getTime()
+        date: new Date().getTime(),
+        uimg: user.img,
       };
-      console.log('Uploading news', countryId, data);
-      this.firestore.collection('news').doc('news').collection(countryId).add(data).then(res => result.next(res)).catch(err => result.error(err));
+      this.firestore.collection(countryId).add(data).then(res => result.next(res)).catch(err => result.error(err));
     });
     return result;
 
 
+  }
+
+  listNews(country: string): Observable<DocNewsEntry[]> {
+    const result = new ReplaySubject<DocNewsEntry[]>();
+    const countryId = this.countryId(country);
+    const coll = this.firestore.collection(countryId);
+    coll.snapshotChanges().subscribe(snaps => {
+      coll.get().subscribe(query => {
+        result.next(query.docs.map(doc => {
+          return {id: doc.id, data: doc.data() as NewsEntry};
+        }));
+      });
+    });
+    return result;
+  }
+
+  delete(country: string, docId: string): Observable<any> {
+    return from(this.firestore.collection(this.countryId(country)).doc(docId).delete());
   }
 }

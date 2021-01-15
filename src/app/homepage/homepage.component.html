@@ -1,4 +1,4 @@
-<app-coviddata-main [dataSource]="globalDataSource" [countryName]="'Worldwide'">
+<app-coviddata-main [dataSource]="globalDataSource" [countryData]="countryData" >
 
   <app-section [title]="'Corona Virus Cases by Country'">
     <app-countries-table [dataSource]="countriesTableObservable"

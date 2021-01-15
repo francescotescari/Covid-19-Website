@@ -4,7 +4,8 @@
   <div>
     <form #f="ngForm" ngForm (ngSubmit)="$event.preventDefault(); $event.stopPropagation();" [formGroup]="formGroup">
       <p>
-        <app-country-selector appearance="outline" [countriesSource]="countriesDataSubject" [formGroup]="formGroup"
+        <app-country-selector #cSelector appearance="outline" [countriesSource]="countriesDataSubject"
+                              [formGroup]="formGroup"
                               label="Country"></app-country-selector>
       </p>
       <p>
@@ -24,25 +25,31 @@
           <mat-label>Author</mat-label>
           <input matInput required readonly disabled [value]="loginName"/>
           <div matSuffix class="align-self-center">
-            <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+            <button type="button" mat-raised-button color="primary" (click)="logout()">Logout</button>
           </div>
         </mat-form-field>
       </p>
 
-      <p>
+      <div>
         <button type="button" mat-raised-button class="submit" color="primary" (click)="onSubmit()"
                 [disabled]="!formGroup.valid">Upload
         </button>
-      </p>
+
+      </div>
 
     </form>
+  </div>
+  <div>
+    <h3 class="my-3">Manage past news</h3>
+    <app-news-listing [countrySlugObservable]="countrySlug" [showDelete]="true"></app-news-listing>
   </div>
 </div>
 <div *ngIf="loginName == null">
   <h3 class="py-3">You must login to access this section</h3>
-
   <button mat-raised-button (click)="login()" color="primary">Login with Google</button>
 </div>
+
+
 
 
 

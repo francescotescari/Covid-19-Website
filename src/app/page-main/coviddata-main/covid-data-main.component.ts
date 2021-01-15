@@ -8,10 +8,12 @@ import {
   simpleToDiffMapperDated
 } from '../../covid-data.models';
 import {map} from 'rxjs/operators';
-import {CovidDataService} from '../../covid-data.service';
+import {ApiCountryModel, CovidDataService} from '../../covid-data.service';
 import {Label, SingleDataSet} from 'ng2-charts';
 import {Router} from '@angular/router';
 import {LoadmanagerService} from '../../loadmanager.service';
+import {NewsEntry, NewsService} from '../../news.service';
+
 
 @Component({
   selector: 'app-coviddata-main',
@@ -20,17 +22,20 @@ import {LoadmanagerService} from '../../loadmanager.service';
 })
 export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
-  @Input('dataSource') dataSource: Observable<DatedCovidSimpleEntry[]>;
-  @Input('countryName') countryName: string;
+  @Input() dataSource: Observable<DatedCovidSimpleEntry[]>;
+  @Input() countryData: Observable<ApiCountryModel>;
+  slugData: Observable<string>;
+  country: ApiCountryModel;
   summaryTableObservable: Observable<object>;
   pieChartData: Observable<SingleDataSet>;
   pieChartLabels: Label[] = ['Total Cases', 'Total recovered', 'Total deaths'];
   diffDataSource: Observable<DatedCovidDiffEntry[]>;
 
+
   countrySlug: string;
   loading = true;
 
-  constructor(public router: Router, public loadService: LoadmanagerService) {
+  constructor(public router: Router) {
   }
 
   ngOnInit(): void {
@@ -43,6 +48,10 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
       return [lastValue.Confirmed, lastValue.Recovered, lastValue.Deaths];
     }));
     this.diffDataSource = this.dataSource.pipe(map(simpleToDiffMapperDated));
+    this.countryData.subscribe(country => {
+      this.country = country;
+    });
+    this.slugData = this.countryData.pipe(map(value => value.Slug));
   }
 
 
@@ -51,11 +60,15 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
   }
 
   countryDisplayName(): string {
-    if (this.countryName == null || this.countryName === 'Worldwide') {
+    if (this.country == null) {
+      return '';
+    }
+    if (this.country.Slug == null) {
       return 'Worldwide';
     } else {
-      return 'in ' + this.countryName;
+      return 'in ' + this.country.Country;
     }
   }
+
 
 }

@@ -6,6 +6,7 @@ import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {CountrySelectorComponent} from '../country-selector/country-selector.component';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class NewsComponent implements OnInit, AfterViewInit {
   };
   formGroup = new FormGroup(this.formControls);
   loginName: string = null;
+  countrySlug = new ReplaySubject<string>();
+  @ViewChild('cSelector') cSelector: CountrySelectorComponent;
 
 
   constructor(private loadService: LoadmanagerService,
@@ -39,6 +42,7 @@ export class NewsComponent implements OnInit, AfterViewInit {
         this.loginName = next.displayName;
       }
     });
+    this.countrySlug.next(null);
   }
 
 
@@ -49,6 +53,7 @@ export class NewsComponent implements OnInit, AfterViewInit {
         this.loadedStatus.complete();
       });
     }, 0);
+    this.cSelector.slugControl.valueChanges.subscribe(this.countrySlug);
   }
 
   onUploaded(error: Error = null): void {
@@ -65,6 +70,11 @@ export class NewsComponent implements OnInit, AfterViewInit {
     reset(this.formControls.text);
 
   }
+
+  onDelete(): void {
+
+  }
+
 
   logout(): void {
     this.loginName = null;

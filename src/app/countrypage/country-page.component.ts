@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ApiSummaryModel, CovidDataService} from '../covid-data.service';
+import {ApiCountryModel, ApiSummaryModel, CovidDataService} from '../covid-data.service';
 import {combineLatest, forkJoin, Observable, ReplaySubject, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
@@ -16,7 +16,7 @@ export class CountryPageComponent implements OnInit, AfterViewInit {
   countryDataObservable: Observable<ApiCountryCovidEntry[]>;
   private countryDataSubject: ReplaySubject<ApiCountryCovidEntry[]>;
   private countrySlugSubject: ReplaySubject<string>;
-  countryName: string;
+  countryData = new ReplaySubject<ApiCountryModel>();
 
   constructor(private apis: CovidDataService, private route: ActivatedRoute, private loadManager: LoadmanagerService) {
   }
@@ -33,10 +33,14 @@ export class CountryPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.countrySlugSubject.subscribe(value => {
-        this.apis.fetchDailyCountry(value).subscribe(data => {
-          this.countryName = data[0].Country;
-          this.countryDataSubject.next(data);
+        this.apis.fetchCountries().subscribe(countries => {
+          const countryData = countries.filter(c => c.Slug === value)[0];
+          this.countryData.next(countryData);
+          this.apis.fetchDailyCountry(value).subscribe(data => {
+            this.countryDataSubject.next(data);
+          });
         });
+
       });
     }, 0);
   }

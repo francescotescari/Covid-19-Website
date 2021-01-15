@@ -10,6 +10,7 @@ interface User {
   uid: string;
   displayName: string;
   email: string;
+  img: string;
 }
 
 @Injectable({
@@ -36,10 +37,6 @@ export class AuthService {
     return from(this.afAuth.signOut());
   }
 
-  loggedIn(): boolean {
-    return this.user != null;
-  }
-
 
   login(): Observable<auth.UserCredential> {
     return from(this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())).pipe(tap(value => {
@@ -47,6 +44,7 @@ export class AuthService {
         uid: value.user.uid,
         email: value.user.email,
         displayName: value.user.displayName,
+        img: value.user.photoURL,
       };
       this.localCache.setCached('user', this.user);
     }));

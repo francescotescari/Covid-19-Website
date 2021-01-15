@@ -1,0 +1,23 @@
+<div *ngIf="newsData == null">
+  <p>
+    Loading news data...
+  </p>
+</div>
+<div *ngIf="newsData != null">
+  <p *ngIf="newsData.length == 0">No news for this country</p>
+  <mat-card class="my-2 mx-1" *ngFor="let e of newsData">
+    <mat-card-header>
+      <div mat-card-avatar [style]="'background-image: url(\''+e.data.uimg+'\');'"></div>
+      <mat-card-title>{{e.data.title}}</mat-card-title>
+      <mat-card-subtitle>by {{e.data.author}} - <b>{{dateOf(e.data.date)}}</b></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{e.data.content}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions *ngIf="showDelete">
+      <button mat-button color="warn" (click)="delete(e, countrySlug)">DELETE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

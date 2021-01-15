@@ -17,6 +17,7 @@ export interface ApiCountryModel {
   Slug: string;
   ISO2: string;
 }
+export const WWCountry: ApiCountryModel = {Country: 'Worldwide', Slug: null, ISO2: null};
 
 function timeSinceStartOfTheDay(): number {
   const midnightDate = new Date();

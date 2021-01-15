@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {ApiCountryModel, CovidDataService} from '../covid-data.service';
+import {ApiCountryModel, CovidDataService, WWCountry} from '../covid-data.service';
 import {LoadmanagerService} from '../loadmanager.service';
 import {NewsService} from '../news.service';
 import {debounceTime, map} from 'rxjs/operators';
@@ -8,7 +8,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
 
 
-const WWCountry = {Country: 'Worldwide', Slug: null, ISO2: null};
+
 
 class StringFormControl extends FormControl {
   setValue(value: any,
@@ -27,11 +27,11 @@ class StringFormControl extends FormControl {
 })
 export class CountrySelectorComponent implements OnInit {
 
-  @Input('countriesSource') countriesSource: Observable<ApiCountryModel[]>;
-  @Input('defaultValue') defaultValue: ApiCountryModel;
-  @Input('appearance') appearance: MatFormFieldAppearance;
-  @Input('label') label: string;
-  @Input('formGroup') formGroup: FormGroup;
+  @Input() countriesSource: Observable<ApiCountryModel[]>;
+  @Input() defaultValue: ApiCountryModel;
+  @Input() appearance: MatFormFieldAppearance;
+  @Input() label: string;
+  @Input() formGroup: FormGroup;
   @Output('selectedCountry') selCountryEmitter = new EventEmitter<ApiCountryModel>();
   private countries: ApiCountryModel[];
   slugControl = new FormControl();
