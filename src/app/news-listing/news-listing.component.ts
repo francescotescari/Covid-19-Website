@@ -41,7 +41,10 @@ export class NewsListingComponent implements OnInit {
   }
 
   delete(entry: DocNewsEntry, country: string): void {
-    this.news.delete(country, entry.id);
+    this.news.delete(country, entry.id).subscribe({
+      next: value => this.snackBar.open('Deleted successfully!', null, {duration: 2000}),
+      error: err => this.snackBar.open('Failed to delete: ' + err, null, {duration: 2000}),
+    });
   }
 
 }
