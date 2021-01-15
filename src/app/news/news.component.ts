@@ -19,7 +19,8 @@ export class NewsComponent implements OnInit, AfterViewInit {
   countriesDataSubject = new ReplaySubject<ApiCountryModel[]>();
   formControls = {
     title: new FormControl(),
-    text: new FormControl()
+    text: new FormControl(),
+    country: new FormControl()
   };
   formGroup = new FormGroup(this.formControls);
   loginName: string = null;
@@ -53,7 +54,7 @@ export class NewsComponent implements OnInit, AfterViewInit {
         this.loadedStatus.complete();
       });
     }, 0);
-    this.cSelector.slugControl.valueChanges.subscribe(this.countrySlug);
+    this.formControls.country.valueChanges.subscribe(this.countrySlug);
   }
 
   onUploaded(error: Error = null): void {

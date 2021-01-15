@@ -42,7 +42,9 @@ tr.mat-header-row {
 .mat-form-field-suffix {
   align-self: center !important;
 }
-
+button {
+  outline: 0 !important;
+}
 
 /* cursors */
 .cursor-alias {cursor: alias;}

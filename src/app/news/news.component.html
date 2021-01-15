@@ -5,7 +5,7 @@
     <form #f="ngForm" ngForm (ngSubmit)="$event.preventDefault(); $event.stopPropagation();" [formGroup]="formGroup">
       <p>
         <app-country-selector #cSelector appearance="outline" [countriesSource]="countriesDataSubject"
-                              [formGroup]="formGroup"
+                              [slugControl]="formControls.country"
                               label="Country"></app-country-selector>
       </p>
       <p>

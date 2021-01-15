@@ -31,13 +31,12 @@ export class CountrySelectorComponent implements OnInit {
   @Input() defaultValue: ApiCountryModel;
   @Input() appearance: MatFormFieldAppearance;
   @Input() label: string;
-  @Input() formGroup: FormGroup;
-  @Output('selectedCountry') selCountryEmitter = new EventEmitter<ApiCountryModel>();
+  @Input() slugControl: FormControl;
+  @Output() selectedCountry = new EventEmitter<ApiCountryModel>();
   private countries: ApiCountryModel[];
-  slugControl = new FormControl();
   countryFormControl = new StringFormControl();
   filteredOptions: Observable<ApiCountryModel[]>;
-  selectedCountry: ApiCountryModel;
+  mySelectedCountry: ApiCountryModel;
 
 
   ngOnInit(): void {
@@ -49,9 +48,6 @@ export class CountrySelectorComponent implements OnInit {
       );
     if (this.defaultValue == null) {
       this.defaultValue = WWCountry;
-    }
-    if (this.formGroup != null) {
-      this.formGroup.addControl('country', this.slugControl);
     }
     this.selectCountry(this.defaultValue);
     this.countryFormControl.setValue(this.defaultValue.Country);
@@ -72,8 +68,8 @@ export class CountrySelectorComponent implements OnInit {
   }
 
   selectCountry(country: ApiCountryModel): void {
-    this.selectedCountry = country;
-    this.selCountryEmitter.emit(country);
+    this.mySelectedCountry = country;
+    this.selectedCountry.emit(country);
     this.slugControl.setValue(country.Slug);
   }
 
