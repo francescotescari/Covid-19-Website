@@ -6,7 +6,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 function padString(obj: any, len: number, pad: string = '0'): string {
   let s = obj.toString();
   while (s.length < len) {
-    s += pad;
+    s = pad + s;
   }
   return s;
 }

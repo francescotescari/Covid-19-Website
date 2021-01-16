@@ -8,8 +8,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
 
 
-
-
 class StringFormControl extends FormControl {
   setValue(value: any,
            options?: { onlySelf?: boolean; emitEvent?: boolean; emitModelToViewChange?: boolean; emitViewToModelChange?: boolean }): void {
@@ -27,20 +25,25 @@ class StringFormControl extends FormControl {
 })
 export class CountrySelectorComponent implements OnInit {
 
-  @Input() countriesSource: Observable<ApiCountryModel[]>;
   @Input() defaultValue: ApiCountryModel;
   @Input() appearance: MatFormFieldAppearance;
   @Input() label: string;
   @Input() slugControl: FormControl;
+  @Input() disabled = false;
+  @Input() forceCountry = true;
   @Output() selectedCountry = new EventEmitter<ApiCountryModel>();
   private countries: ApiCountryModel[];
   countryFormControl = new StringFormControl();
   filteredOptions: Observable<ApiCountryModel[]>;
   mySelectedCountry: ApiCountryModel;
 
+  constructor(private apis: CovidDataService) {
+
+  }
+
 
   ngOnInit(): void {
-    this.countriesSource.subscribe(value => this.countries = value);
+    this.apis.fetchCountries().subscribe(value => this.countries = value);
     this.filteredOptions = this.countryFormControl.valueChanges
       .pipe(
         map(value => this._filter(value)),
@@ -49,8 +52,12 @@ export class CountrySelectorComponent implements OnInit {
     if (this.defaultValue == null) {
       this.defaultValue = WWCountry;
     }
-    this.selectCountry(this.defaultValue);
-    this.countryFormControl.setValue(this.defaultValue.Country);
+
+    if (this.forceCountry) {
+      this.selectCountry(this.defaultValue);
+      this.countryFormControl.setValue(this.defaultValue.Country);
+    }
+
 
   }
 
@@ -71,6 +78,12 @@ export class CountrySelectorComponent implements OnInit {
     this.mySelectedCountry = country;
     this.selectedCountry.emit(country);
     this.slugControl.setValue(country.Slug);
+  }
+
+  onSelect(selected = true): void {
+    if (selected || this.forceCountry) {
+      this.countryFormControl.setValue(this.mySelectedCountry.Country);
+    }
   }
 
 

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoadmanagerService} from '../loadmanager.service';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +9,19 @@ import {LoadmanagerService} from '../loadmanager.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public loadManager: LoadmanagerService) { }
+  slugControl = new FormControl();
+  disabled = false;
+
+  constructor(public loadManager: LoadmanagerService) {
+  }
 
   ngOnInit(): void {
+    // this.loadManager.removeLoadObservable().subscribe(value => this.disabled = false);
+    this.slugControl.valueChanges.subscribe(slug => {
+     // this.slugControl.reset();
+      this.disabled = true;
+      this.loadManager.rerouteAfterLoad(['/country/' + slug]);
+    });
   }
 
 }

@@ -5,10 +5,10 @@
   <input #inp matInput
          [matAutocomplete]="auto"
          [formControl]="countryFormControl"
-         (focusout)="countryFormControl.setValue(mySelectedCountry.Country)"
+         (focusout)="onSelect(false)"
          (click)="inp.select()"
   />
-  <mat-autocomplete #auto="matAutocomplete" (closed)="countryFormControl.setValue(mySelectedCountry.Country)"
+  <mat-autocomplete #auto="matAutocomplete" (closed)="onSelect(true)"
                     (optionSelected)="selectCountry($event.option.value)">
     <mat-option *ngFor="let country of filteredOptions | async" [value]="country">
       {{country.Country}}

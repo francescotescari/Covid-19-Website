@@ -2,51 +2,45 @@ import {Injectable} from '@angular/core';
 import firebase from 'firebase';
 import auth = firebase.auth;
 import {AngularFireAuth} from '@angular/fire/auth';
-import {from, Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {BehaviorSubject, from, Observable, ReplaySubject} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {LocalStorageCache} from './caching';
+import Persistence = firebase.auth.Auth.Persistence;
+import {logOnError} from './utils';
 
 interface User {
   uid: string;
   displayName: string;
   email: string;
-  img: string;
+  photoURL: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private user: User;
-  private localCache = new LocalStorageCache<User>('login_');
+  private userState = new BehaviorSubject<User>(null);
 
   constructor(
     private afAuth: AngularFireAuth,
   ) {
+    logOnError(from(afAuth.setPersistence(Persistence.LOCAL)));
+    this.afAuth.user.subscribe(this.userState);
+    this.afAuth.authState.subscribe(this.userState);
+    this.userState.subscribe(next => console.log('User status', next));
   }
 
 
   getUser(): Observable<User> {
-    return this.localCache.getCached('user', 10 * 60 * 1000);
+    return this.afAuth.user;
   }
 
   logout(): Observable<void> {
-    this.user = null;
-    this.localCache.remove('user');
     return from(this.afAuth.signOut());
   }
 
 
   login(): Observable<auth.UserCredential> {
-    return from(this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())).pipe(tap(value => {
-      this.user = {
-        uid: value.user.uid,
-        email: value.user.email,
-        displayName: value.user.displayName,
-        img: value.user.photoURL,
-      };
-      this.localCache.setCached('user', this.user);
-    }));
+    return from(this.afAuth.signInWithPopup(new auth.GoogleAuthProvider()));
   }
 }

@@ -33,11 +33,13 @@ export class CountryPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.countrySlugSubject.subscribe(value => {
+        const sub = this.loadManager.registerLoader();
         this.apis.fetchCountries().subscribe(countries => {
           const countryData = countries.filter(c => c.Slug === value)[0];
           this.countryData.next(countryData);
           this.apis.fetchDailyCountry(value).subscribe(data => {
             this.countryDataSubject.next(data);
+            sub.complete();
           });
         });
 

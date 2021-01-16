@@ -45,8 +45,10 @@ export class LoadmanagerService {
   registerLoader(): Subject<void> {
     const subject = new Subject<void>();
     this.registeredSubjects.add(subject);
+    console.log('A', new Error());
     subject.subscribe({
       complete: () => {
+        console.log('C', this.registeredSubjects, new Error());
         this.registeredSubjects.delete(subject);
         if (this.registeredSubjects.size === 0) {
           this.removeLoadSubject.next(0);
@@ -75,8 +77,10 @@ export class LoadmanagerService {
 
   public rerouteAfterLoad(commands): void {
     this.notifySetLoad();
+
     setTimeout(() => {
       this.router.navigate(commands).then(value => {
+        console.log('Reroute', value);
         if (!value) {
           this.removeLoadSubject.next(0);
         }

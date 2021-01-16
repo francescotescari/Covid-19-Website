@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import {AngularFirestore, DocumentReference} from '@angular/fire/firestore';
 import {AuthService} from './auth.service';
 import {from, Observable, ReplaySubject} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {first, map, tap} from 'rxjs/operators';
 
 export interface NewsEntry {
   title: string;
@@ -33,7 +33,7 @@ export class NewsService {
   uploadNews(country: string, title: string, content: string): Observable<DocumentReference> {
     const countryId = this.countryId(country);
     const result = new ReplaySubject<DocumentReference>();
-    this.auth.getUser().subscribe(user => {
+    this.auth.getUser().pipe(first()).subscribe(user => {
       if (user == null) {
         result.error(Error('Not authenticated'));
         return;
@@ -43,7 +43,7 @@ export class NewsService {
         content,
         author: user.displayName,
         date: new Date().getTime(),
-        uimg: user.img,
+        uimg: user.photoURL,
       };
       this.firestore.collection(countryId).add(data).then(res => result.next(res)).catch(err => result.error(err));
     });

@@ -1,5 +1,5 @@
-import {AfterContentInit, Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {AfterContentInit, AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 import {
   CovidDiffEntry,
   DatedCovidDiffEntry,
@@ -13,6 +13,16 @@ import {Label, SingleDataSet} from 'ng2-charts';
 import {Router} from '@angular/router';
 import {LoadmanagerService} from '../../loadmanager.service';
 import {NewsEntry, NewsService} from '../../news.service';
+
+const emptyDataEntry: CovidDiffEntry = {
+  NewRecovered: 0,
+  NewDeaths: 0,
+  NewConfirmed: 0,
+  TotalDeaths: 0,
+  TotalRecovered: 0,
+  TotalConfirmed: 0,
+
+};
 
 
 @Component({
@@ -32,16 +42,19 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
   diffDataSource: Observable<DatedCovidDiffEntry[]>;
 
 
+
   countrySlug: string;
   loading = true;
 
   constructor(public router: Router) {
   }
 
+
+
   ngOnInit(): void {
     this.summaryTableObservable = this.dataSource.pipe(map(value => {
       const diff = simpleToDiffMapper(value);
-      return CovidDataService.CovidDataMapper(diff[diff.length - 1]);
+      return CovidDataService.CovidDataMapper(diff.length > 0 ? diff[diff.length - 1] : emptyDataEntry);
     }));
     this.pieChartData = this.dataSource.pipe(map(value => {
       const lastValue = value[value.length - 1];

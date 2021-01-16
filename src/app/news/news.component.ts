@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core'
 import {LoadmanagerService} from '../loadmanager.service';
 import {NewsService} from '../news.service';
 import {ApiCountryModel, CovidDataService} from '../covid-data.service';
-import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -15,8 +15,6 @@ import {CountrySelectorComponent} from '../country-selector/country-selector.com
   styleUrls: ['./news.component.css']
 })
 export class NewsComponent implements OnInit, AfterViewInit {
-  private loadedStatus: Subject<any>;
-  countriesDataSubject = new ReplaySubject<ApiCountryModel[]>();
   formControls = {
     title: new FormControl(),
     text: new FormControl(),
@@ -24,7 +22,7 @@ export class NewsComponent implements OnInit, AfterViewInit {
   };
   formGroup = new FormGroup(this.formControls);
   loginName: string = null;
-  countrySlug = new ReplaySubject<string>();
+  countrySlug = new BehaviorSubject<string>(null);
   @ViewChild('cSelector') cSelector: CountrySelectorComponent;
 
 
@@ -37,28 +35,29 @@ export class NewsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loadedStatus = this.loadService.registerLoader();
-    this.auth.getUser().subscribe(next => {
-      if (next != null) {
-        this.loginName = next.displayName;
+    const userStatusLoaded = this.loadService.registerLoader();
+    this.auth.getUser().subscribe({
+      next: next => {
+        console.log('User status', next);
+        if (next != null) {
+          this.loginName = next.displayName;
+        }
+        userStatusLoaded.complete();
+      },
+      error: err => {
+        userStatusLoaded.complete();
+        console.log(err);
       }
     });
-    this.countrySlug.next(null);
   }
 
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.covid.fetchCountries().subscribe(next => {
-        this.countriesDataSubject.next(next);
-        this.loadedStatus.complete();
-      });
-    }, 0);
     this.formControls.country.valueChanges.subscribe(this.countrySlug);
   }
 
   onUploaded(error: Error = null): void {
-    const msg = error ? 'Failed to upload' + error : 'Uploaded successfully!';
+    const msg = error ? 'Failed to upload: ' + error : 'Uploaded successfully!';
     this.snackBar.open(msg, null, {duration: 2000});
 
     function reset(ctrl: FormControl): void {
@@ -72,16 +71,13 @@ export class NewsComponent implements OnInit, AfterViewInit {
 
   }
 
-  onDelete(): void {
-
-  }
-
 
   logout(): void {
     this.loginName = null;
     const loader = this.loadService.registerLoader();
-    this.auth.logout().subscribe(next => {
-      loader.complete();
+    this.auth.logout().subscribe({
+      next: value => loader.complete(),
+      error: err => loader.complete()
     });
   }
 

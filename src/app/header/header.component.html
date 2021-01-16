@@ -18,6 +18,10 @@
         <a mat-button appLoadRouterLink="/news">News</a>
       </div>
 
+      <div class="flex-fill justify-content-end d-none d-lg-flex">
+        <app-country-selector [slugControl]="slugControl" label="Search country" [forceCountry]="false" [disabled]="disabled"></app-country-selector>
+      </div>
+
       <div class="d-md-none invisible">
         <button mat-icon-button>
           <mat-icon>menu</mat-icon>
