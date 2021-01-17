@@ -15,7 +15,7 @@ import {Observable, of, ReplaySubject} from 'rxjs';
 import {Router} from '@angular/router';
 import {LoadmanagerService} from '../loadmanager.service';
 import {
-  CountryDiffEntry,
+  CountryDiffEntry, CovidDiffEntry,
   CovidSimpleEntry,
   DatedCovidDiffEntry,
   DatedCovidSimpleEntry,
@@ -29,9 +29,10 @@ import {
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements AfterViewInit, OnInit {
-  globalDataSource: Observable<DatedCovidSimpleEntry[]>;
+  globalDataSource = new ReplaySubject<DatedCovidSimpleEntry[]>();
   countriesTableObservable: Observable<CountryDiffEntry[]>;
-  private summaryObservable: ReplaySubject<ApiSummaryModel>;
+  private summarySubject = new ReplaySubject<ApiSummaryModel>();
+  summaryDataSource: Observable<CovidDiffEntry>;
   countryData: Observable<ApiCountryModel> = of(WWCountry);
 
   constructor(private apis: CovidDataService, public router: Router, private loadManager: LoadmanagerService) {
@@ -39,19 +40,17 @@ export class HomepageComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.apis.fetchSummary().subscribe(this.summaryObservable);
+      this.apis.fetchSummary().subscribe(this.summarySubject);
+      this.apis.fetchDailyWorld().pipe(map(value => diffToSimpleMapperDated(value as DatedCovidDiffEntry[]))).subscribe(this.globalDataSource);
     }, 0);
 
   }
 
   ngOnInit(): void {
-    this.summaryObservable = new ReplaySubject<ApiSummaryModel>();
-    this.globalDataSource = this.summaryObservable.pipe(map(value => {
-      return diffToSimpleMapperDated([value.Global as DatedCovidDiffEntry]);
-    }));
-    this.countriesTableObservable = this.summaryObservable.pipe(map(value => CovidDataService.GlobalCountryDataMapper(value)));
+    this.countriesTableObservable = this.summarySubject.pipe(map(value => CovidDataService.GlobalCountryDataMapper(value)));
     const sub = this.loadManager.registerLoader();
-    this.summaryObservable.subscribe(value => sub.complete());
+    this.summarySubject.subscribe(value => sub.complete());
+    this.summaryDataSource = this.summarySubject.pipe(map(value => value.Global));
   }
 
   onCountryClick(country): void {

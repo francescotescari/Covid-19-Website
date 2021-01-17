@@ -11,6 +11,7 @@ export interface NewsEntry {
   author: string;
   date: number;
   uimg: string;
+  uid: string;
 }
 
 export interface DocNewsEntry {
@@ -44,6 +45,7 @@ export class NewsService {
         author: user.displayName,
         date: new Date().getTime(),
         uimg: user.photoURL,
+        uid: user.uid,
       };
       this.firestore.collection(countryId).add(data).then(res => result.next(res)).catch(err => result.error(err));
     });

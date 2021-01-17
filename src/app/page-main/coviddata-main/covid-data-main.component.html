@@ -7,9 +7,8 @@
   <h3 class="text-black-50">Live update and statistics</h3>
 </div>
 
-<div *ngIf="loading">Loading, please wait...</div>
 
-<div *ngIf="!loading">
+<div>
 
   <div class="list-group-item-dark p-2 text-center my-4 mat-elevation-z2" *ngIf="country != null && country.Slug != null">
     <a appLoadRouterLink="/">Worldwide</a>
@@ -20,7 +19,7 @@
     <app-coviddata-table [dataSource]="summaryTableObservable"></app-coviddata-table>
   </app-section>
 
-  <app-section [title]="'News about COVID-19 '+countryDisplayName()">
+  <app-section [title]="'Latest news about COVID-19 '+countryDisplayName()">
     <div class="newsDiv">
       <app-news-listing [countrySlugObservable]="slugData"></app-news-listing>
     </div>

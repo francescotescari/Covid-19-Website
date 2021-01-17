@@ -17,6 +17,7 @@ export interface ApiCountryModel {
   Slug: string;
   ISO2: string;
 }
+
 export const WWCountry: ApiCountryModel = {Country: 'Worldwide', Slug: null, ISO2: null};
 
 function timeSinceStartOfTheDay(): number {
@@ -70,6 +71,10 @@ export class CovidDataService {
   fetchCountries(): Observable<ApiCountryModel[]> {
     return new LocalStorageCache<ApiCountryModel[]>('').getOrSet('countries_data', Math.min(timeSinceStartOfTheDay(), 600 * 1000),
       () => this.http.get<ApiCountryModel[]>('https://api.covid19api.com/countries', {responseType: 'json'}));
+  }
+
+  fetchDailyWorld(): Observable<CovidDiffEntry[]> {
+    return this.http.get<CovidDiffEntry[]>('https://api.covid19api.com/world?from=2020-04-13T00:00:00Z', {responseType: 'json'});
   }
 
 

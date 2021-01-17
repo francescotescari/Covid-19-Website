@@ -1,25 +1,25 @@
 <div *ngIf="loginName != null">
-  <h3 class="py-3">Add a news about the COVID-19</h3>
+  <h3 class="py-3">Add news about COVID-19</h3>
 
   <div>
     <form #f="ngForm" ngForm (ngSubmit)="$event.preventDefault(); $event.stopPropagation();" [formGroup]="formGroup">
-      <p>
+      <div>
         <app-country-selector #cSelector appearance="outline"   [slugControl]="formControls.country"
                               label="Country"></app-country-selector>
-      </p>
-      <p>
+      </div>
+      <div>
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>News Title</mat-label>
           <input matInput required [formControl]="formControls.title">
         </mat-form-field>
-      </p>
-      <p>
+      </div>
+      <div>
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Content</mat-label>
           <textarea matInput required [formControl]="formControls.text"></textarea>
         </mat-form-field>
-      </p>
-      <p>
+      </div>
+      <div>
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Author</mat-label>
           <input matInput required readonly disabled [value]="loginName"/>
@@ -27,7 +27,7 @@
             <button type="button" mat-raised-button color="primary" (click)="logout()">Logout</button>
           </div>
         </mat-form-field>
-      </p>
+      </div>
 
       <div>
         <button type="button" mat-raised-button class="submit" color="primary" (click)="onSubmit()"
@@ -40,7 +40,7 @@
   </div>
   <div>
     <h3 class="my-3">Manage past news</h3>
-    <app-news-listing [countrySlugObservable]="countrySlug" [showDelete]="true"></app-news-listing>
+    <app-news-listing [countrySlugObservable]="countrySlug" [showDelete]="true" [debounce]="100"></app-news-listing>
   </div>
 </div>
 <div *ngIf="loginName == null">

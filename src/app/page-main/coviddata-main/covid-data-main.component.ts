@@ -32,6 +32,7 @@ const emptyDataEntry: CovidDiffEntry = {
 })
 export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
+  @Input() summarySource: Observable<CovidDiffEntry>;
   @Input() dataSource: Observable<DatedCovidSimpleEntry[]>;
   @Input() countryData: Observable<ApiCountryModel>;
   slugData: Observable<string>;
@@ -44,24 +45,24 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
 
   countrySlug: string;
-  loading = true;
+  private loaded: Subject<void>;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private loadManager: LoadmanagerService) {
   }
 
 
 
   ngOnInit(): void {
-    this.summaryTableObservable = this.dataSource.pipe(map(value => {
-      const diff = simpleToDiffMapper(value);
-      return CovidDataService.CovidDataMapper(diff.length > 0 ? diff[diff.length - 1] : emptyDataEntry);
-    }));
-    this.pieChartData = this.dataSource.pipe(map(value => {
-      if (value.length === 0){
-        return [0, 0, 0];
-      }
-      const lastValue = value[value.length - 1];
-      return [lastValue.Confirmed, lastValue.Recovered, lastValue.Deaths];
+    this.loaded = this.loadManager.registerLoader();
+    if (this.summarySource == null){
+      this.summarySource = this.dataSource.pipe(map(value => {
+        const diff = simpleToDiffMapper(value);
+        return diff.length > 0 ? diff[diff.length - 1] : emptyDataEntry;
+      }));
+    }
+    this.summaryTableObservable = this.summarySource.pipe(map(CovidDataService.CovidDataMapper));
+    this.pieChartData = this.summarySource.pipe(map(value => {
+      return [value.TotalConfirmed, value.TotalRecovered, value.TotalDeaths];
     }));
     this.diffDataSource = this.dataSource.pipe(map(simpleToDiffMapperDated));
     this.countryData.subscribe(country => {
@@ -72,7 +73,7 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
 
   ngAfterContentInit(): void {
-    this.dataSource.subscribe(next => this.loading = false);
+    this.dataSource.subscribe(next => this.loaded.complete());
   }
 
   countryDisplayName(): string {

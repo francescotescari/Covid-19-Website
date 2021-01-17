@@ -4,6 +4,7 @@ import {DatedCovidDiffEntry, DatedCovidSimpleEntry} from '../../../covid-data.mo
 import {Label} from 'ng2-charts';
 import {map} from 'rxjs/operators';
 import {ChartDataSets, ChartOptions} from 'chart.js';
+import {LoadmanagerService} from '../../../loadmanager.service';
 
 @Component({
   selector: 'app-daily-line-chart',
@@ -15,6 +16,7 @@ export class DailyLineChartComponent implements OnInit {
   @Input('dataSource') dataSource: Observable<DatedCovidSimpleEntry[]>;
   public lineChartData: ChartDataSets[];
   public lineChartLabels: Label[];
+  loaded = false;
   public lineChartOptions: ChartOptions = {
     responsive: true,
     animation: {
@@ -26,27 +28,36 @@ export class DailyLineChartComponent implements OnInit {
     responsiveAnimationDuration: 0
   };
 
-  constructor() {
+  constructor(private loadManager: LoadmanagerService) {
   }
 
   ngOnInit(): void {
-    this.dataSource.subscribe(value => {
-      const labels = value.map((entry, index) => {
-        if (entry.Date != null) {
-          const date = new Date(Date.parse(entry.Date));
-          return date.getDate() + '/' + (date.getMonth() + 1);
-        } else {
-          return null;
+    const loaded = this.loadManager.registerLoader();
+    this.dataSource.subscribe({
+      next: value => {
+        const labels = value.map((entry, index) => {
+          if (entry.Date != null) {
+            const date = new Date(Date.parse(entry.Date));
+            return date.getDate() + '/' + (date.getMonth() + 1);
+          } else {
+            return null;
+          }
+        });
+        if (labels.length > 0 && labels[0] != null) {
+          this.lineChartLabels = labels;
         }
-      });
-      if (labels.length > 0 && labels[0] != null) {
-        this.lineChartLabels = labels;
+        this.lineChartData = [
+          {data: value.map(v => v.Deaths), label: 'Deaths'},
+          {data: value.map(v => v.Recovered), label: 'Recovered'},
+          {data: value.map(v => v.Confirmed), label: 'Confirmed'},
+        ];
+        loaded.complete();
+        this.loaded = true;
+      },
+      error: err => {
+        loaded.complete();
+        this.loaded = true;
       }
-      this.lineChartData = [
-        {data: value.map(v => v.Deaths), label: 'Deaths'},
-        {data: value.map(v => v.Recovered), label: 'Recovered'},
-        {data: value.map(v => v.Confirmed), label: 'Confirmed'},
-      ];
     });
   }
 

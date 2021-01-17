@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DocNewsEntry, NewsEntry, NewsService} from '../news.service';
 import {Observable} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {debounceTime} from 'rxjs/operators';
+import {AuthService} from '../auth.service';
 
 function padString(obj: any, len: number, pad: string = '0'): string {
   let s = obj.toString();
@@ -21,17 +23,24 @@ export class NewsListingComponent implements OnInit {
   newsData: DocNewsEntry[] = null;
   @Input() countrySlugObservable: Observable<string>;
   @Input() showDelete = false;
+  @Input() debounce: number;
   countrySlug: string;
+  userUid: string;
 
 
-  constructor(private news: NewsService, private snackBar: MatSnackBar) {
+  constructor(private news: NewsService, private snackBar: MatSnackBar, private auth: AuthService) {
   }
 
   ngOnInit(): void {
     this.countrySlugObservable.subscribe(next => {
-      this.news.listNews(next).subscribe(news => this.newsData = news.sort(((a, b) => b.data.date - a.data.date)));
+      let news = this.news.listNews(next);
+      if (this.debounce){
+        news = news.pipe(debounceTime(this.debounce));
+      }
+      news.subscribe(n => this.newsData = n.sort(((a, b) => b.data.date - a.data.date)));
       this.countrySlug = next;
     });
+    this.auth.getUser().subscribe(value => this.userUid = value.uid);
 
   }
 

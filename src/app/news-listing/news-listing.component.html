@@ -16,7 +16,7 @@
         {{e.data.content}}
       </p>
     </mat-card-content>
-    <mat-card-actions *ngIf="showDelete">
+    <mat-card-actions *ngIf="showDelete && (e.data.uid == userUid || e.data.uid == null)">
       <button mat-button color="warn" (click)="delete(e, countrySlug)">DELETE</button>
     </mat-card-actions>
   </mat-card>

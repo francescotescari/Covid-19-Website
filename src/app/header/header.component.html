@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center">
       <div class="d-md-none d-flex">
         <button mat-icon-button (click)="sidenav.toggle()" class="align-self-center" style="outline: 0 !important;">
-          <mat-icon>menu</mat-icon>
+          <mat-icon class="">menu</mat-icon>
         </button>
       </div>
       <div class="text-center text-md-left flex-grow-1 flex-md-grow-0 icon-div menu-buttons justify-content-center">
@@ -40,7 +40,7 @@
       <a appLoadRouterLink="/" class="list-group-item list-group-item-action" (click)="sidenav.close()">Home</a>
       <a appLoadRouterLink="/news" class="list-group-item list-group-item-action" (click)="sidenav.close()">News</a>
     </div>
-    <div class="text-center d-flex justify-content-center mt-2">
+    <div class="text-center d-flex justify-content-center my-2 px-2">
       <app-country-selector [slugControl]="slugControl" label="Search country" [forceCountry]="false" [setValue]="searchValue" (selectedCountry)="sidenav.close();"></app-country-selector>
     </div>
 

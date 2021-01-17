@@ -1,13 +1,19 @@
-<div>
-  <div *ngIf="barChartData != null">
-    <div style="display: block">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="true"
-              [chartType]="'bar'">
-      </canvas>
-    </div>
+<div *ngIf="!loaded">
+  Loading...
+</div>
+<div style="display: block;" *ngIf="loaded">
+  <div *ngIf="barChartLabels == null">
+    No data available
+  </div>
+  <div *ngIf="barChartLabels != null">
+
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="true"
+            [chartType]="'bar'">
+    </canvas>
+
   </div>
 </div>

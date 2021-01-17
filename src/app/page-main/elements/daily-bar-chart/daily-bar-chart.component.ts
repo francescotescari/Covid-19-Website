@@ -4,6 +4,7 @@ import {DatedCovidDiffEntry, DatedCovidSimpleEntry} from '../../../covid-data.mo
 import {Label} from 'ng2-charts';
 import {map} from 'rxjs/operators';
 import {ChartDataSets, ChartOptions} from 'chart.js';
+import {LoadmanagerService} from '../../../loadmanager.service';
 
 @Component({
   selector: 'app-daily-bar-chart',
@@ -26,30 +27,43 @@ export class DailyBarChartComponent implements OnInit {
     responsiveAnimationDuration: 0
   };
 
-  constructor() {
+  loaded = false;
+  explain = false;
+
+  constructor(private loadManager: LoadmanagerService) {
   }
 
   ngOnInit(): void {
+    const loaded = this.loadManager.registerLoader();
     this.dataSource.pipe(map(value => {
       return value.slice(Math.max(0, value.length - 7));
-    })).subscribe(value => {
-      const labels = value.map((entry, index) => {
-        if (entry.Date != null) {
-          const date = new Date(Date.parse(entry.Date));
-          return date.getDate() + '/' + (date.getMonth() + 1);
-        } else {
-          return null;
+    })).subscribe({
+      next: value => {
+        const labels = value.map((entry, index) => {
+          if (entry.Date != null) {
+            const date = new Date(Date.parse(entry.Date));
+            return date.getDate() + '/' + (date.getMonth() + 1);
+          } else {
+            return null;
+          }
+        });
+        if (labels.length > 0 && labels[0] != null) {
+          this.barChartLabels = labels;
         }
-      });
-      if (labels.length > 0 && labels[0] != null){
-        this.barChartLabels = labels;
+        this.barChartData = [
+          {data: value.map(v => v.NewDeaths), label: 'New Deaths'},
+          {data: value.map(v => v.NewRecovered), label: 'New Recovered'},
+          {data: value.map(v => v.NewConfirmed), label: 'New Confirmed'},
+        ];
+        loaded.complete();
+        this.loaded = true;
+      },
+      error: err => {
+        loaded.complete();
+        this.loaded = true;
       }
-      this.barChartData = [
-        {data: value.map(v => v.NewDeaths), label: 'New Deaths'},
-        {data: value.map(v => v.NewRecovered), label: 'New Recovered'},
-        {data: value.map(v => v.NewConfirmed), label: 'New Confirmed'},
-      ];
     });
+
   }
 
 }
