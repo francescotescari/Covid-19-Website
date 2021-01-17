@@ -11,7 +11,7 @@
 
 <div *ngIf="!loading">
 
-  <div class="list-group-item-dark p-2 text-center my-4" *ngIf="country != null && country.Slug != null">
+  <div class="list-group-item-dark p-2 text-center my-4 mat-elevation-z2" *ngIf="country != null && country.Slug != null">
     <a appLoadRouterLink="/">Worldwide</a>
     -> {{country.Country}}
   </div>
@@ -42,7 +42,7 @@
   <ng-content></ng-content>
 
   <div class="p-2 mb-3 px-md-0">
-    <div class="foot-box text-center p-2 mat-elevation-z8-lg">
+    <div class="foot-box text-center p-2 mat-elevation-z2">
       Data source: <a href="https://covid19api.com/" target="_blank">COVID-19 API / Johns Hopkins CSSE</a>
     </div>
 

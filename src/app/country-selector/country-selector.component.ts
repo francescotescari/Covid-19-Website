@@ -31,6 +31,8 @@ export class CountrySelectorComponent implements OnInit {
   @Input() slugControl: FormControl;
   @Input() disabled = false;
   @Input() forceCountry = true;
+  @Input() setValue: Observable<string>;
+  @Input() formGroup: FormGroup;
   @Output() selectedCountry = new EventEmitter<ApiCountryModel>();
   private countries: ApiCountryModel[];
   countryFormControl = new StringFormControl();
@@ -57,7 +59,18 @@ export class CountrySelectorComponent implements OnInit {
       this.selectCountry(this.defaultValue);
       this.countryFormControl.setValue(this.defaultValue.Country);
     }
+    if (this.setValue != null) {
+      this.setValue.subscribe(next => {
 
+        setTimeout(() => {
+          this.countryFormControl.setValue(next);
+        }, 0);
+
+      });
+    }
+    if (this.formGroup != null) {
+      this.formGroup.addControl('country_search', this.countryFormControl);
+    }
 
   }
 
@@ -70,6 +83,7 @@ export class CountrySelectorComponent implements OnInit {
     const res = this.countries.map(c => [c, c.Country.toLowerCase().indexOf(filterValue)]).filter(pair => pair[1] !== -1)
       .sort(((a, b) => (a[1] as number) - (b[1] as number))).map(pair => pair[0]) as ApiCountryModel[];
     res.push(this.defaultValue);
+    res.forEach(country => country.toString = () => this.forceCountry ? country.Country : '');
     return res;
 
   }
@@ -80,8 +94,8 @@ export class CountrySelectorComponent implements OnInit {
     this.slugControl.setValue(country.Slug);
   }
 
-  onSelect(selected = true): void {
-    if (selected || this.forceCountry) {
+  onSelect(): void {
+    if (this.forceCountry) {
       this.countryFormControl.setValue(this.mySelectedCountry.Country);
     }
   }

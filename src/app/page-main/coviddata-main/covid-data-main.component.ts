@@ -57,6 +57,9 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
       return CovidDataService.CovidDataMapper(diff.length > 0 ? diff[diff.length - 1] : emptyDataEntry);
     }));
     this.pieChartData = this.dataSource.pipe(map(value => {
+      if (value.length === 0){
+        return [0, 0, 0];
+      }
       const lastValue = value[value.length - 1];
       return [lastValue.Confirmed, lastValue.Recovered, lastValue.Deaths];
     }));

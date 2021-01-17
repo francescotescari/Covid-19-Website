@@ -18,8 +18,8 @@
         <a mat-button appLoadRouterLink="/news">News</a>
       </div>
 
-      <div class="flex-fill justify-content-end d-none d-lg-flex">
-        <app-country-selector [slugControl]="slugControl" label="Search country" [forceCountry]="false" [disabled]="disabled"></app-country-selector>
+      <div class="flex-fill justify-content-end d-none d-md-flex">
+        <app-country-selector [slugControl]="slugControl" label="Search country" [forceCountry]="false" [setValue]="searchValue"></app-country-selector>
       </div>
 
       <div class="d-md-none invisible">
@@ -39,6 +39,9 @@
     <div class="list-group text-center" style="min-width: 33vw">
       <a appLoadRouterLink="/" class="list-group-item list-group-item-action" (click)="sidenav.close()">Home</a>
       <a appLoadRouterLink="/news" class="list-group-item list-group-item-action" (click)="sidenav.close()">News</a>
+    </div>
+    <div class="text-center d-flex justify-content-center mt-2">
+      <app-country-selector [slugControl]="slugControl" label="Search country" [forceCountry]="false" [setValue]="searchValue" (selectedCountry)="sidenav.close();"></app-country-selector>
     </div>
 
 

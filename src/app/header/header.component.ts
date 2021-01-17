@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LoadmanagerService} from '../loadmanager.service';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,17 +11,19 @@ import {FormControl} from '@angular/forms';
 export class HeaderComponent implements OnInit {
 
   slugControl = new FormControl();
-  disabled = false;
+  searchValue = new BehaviorSubject('');
+  formGroup = new FormGroup({});
+
 
   constructor(public loadManager: LoadmanagerService) {
   }
 
   ngOnInit(): void {
-    // this.loadManager.removeLoadObservable().subscribe(value => this.disabled = false);
     this.slugControl.valueChanges.subscribe(slug => {
-     // this.slugControl.reset();
-      this.disabled = true;
-      this.loadManager.rerouteAfterLoad(['/country/' + slug]);
+      this.searchValue.next('');
+      (document.activeElement as HTMLElement).blur();
+      const path = slug == null ? '/' : '/country/' + slug;
+      this.loadManager.rerouteAfterLoad([path]);
     });
   }
 
