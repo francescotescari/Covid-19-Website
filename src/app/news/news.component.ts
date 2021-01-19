@@ -38,7 +38,6 @@ export class NewsComponent implements OnInit, AfterViewInit {
     const userStatusLoaded = this.loadService.registerLoader();
     this.auth.getUser().subscribe({
       next: next => {
-        console.log('User status', next);
         if (next != null) {
           this.loginName = next.displayName;
         }

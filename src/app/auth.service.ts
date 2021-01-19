@@ -2,9 +2,7 @@ import {Injectable} from '@angular/core';
 import firebase from 'firebase';
 import auth = firebase.auth;
 import {AngularFireAuth} from '@angular/fire/auth';
-import {BehaviorSubject, from, Observable, ReplaySubject} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {LocalStorageCache} from './caching';
+import {from, Observable} from 'rxjs';
 import Persistence = firebase.auth.Auth.Persistence;
 import {logOnError} from './utils';
 
@@ -19,15 +17,11 @@ interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private userState = new BehaviorSubject<User>(null);
 
   constructor(
     private afAuth: AngularFireAuth,
   ) {
     logOnError(from(afAuth.setPersistence(Persistence.LOCAL)));
-    this.afAuth.user.subscribe(this.userState);
-    this.afAuth.authState.subscribe(this.userState);
-    this.userState.subscribe(next => console.log('User status', next));
   }
 
 

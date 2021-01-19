@@ -59,7 +59,6 @@ export class AppComponent implements OnInit {
   }
 
   routerCallback(): void {
-    console.log('Rerouting');
     this.loading = true;
     this.loadService.resetCompletion();
   }

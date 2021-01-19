@@ -8,7 +8,7 @@ interface CacheEntry<T> {
 }
 
 function debug(...args): void {
-  console.log('[DEBUG]', ...args);
+  // console.log('[DEBUG]', ...args);
 }
 
 abstract class CacheLevel<T> {

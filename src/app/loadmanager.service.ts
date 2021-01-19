@@ -16,7 +16,6 @@ export class AppLoadRouterLinkDirective implements OnInit {
   }
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): boolean {
-    console.log(this.loadRouterLink);
     event.preventDefault();
     event.stopPropagation();
     this.loadManager.rerouteAfterLoad([this.loadRouterLink]);
@@ -45,10 +44,8 @@ export class LoadmanagerService {
   registerLoader(): Subject<void> {
     const subject = new Subject<void>();
     this.registeredSubjects.add(subject);
-    console.log('A', new Error());
     subject.subscribe({
       complete: () => {
-        console.log('C', this.registeredSubjects, new Error());
         this.registeredSubjects.delete(subject);
         if (this.registeredSubjects.size === 0) {
           this.removeLoadSubject.next(0);
@@ -80,7 +77,6 @@ export class LoadmanagerService {
 
     setTimeout(() => {
       this.router.navigate(commands).then(value => {
-        console.log('Reroute', value);
         if (!value) {
           this.removeLoadSubject.next(0);
         }
