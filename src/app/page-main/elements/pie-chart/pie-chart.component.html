@@ -1,8 +1,10 @@
-<div style="display: block" *ngIf="data != null">
-  <canvas baseChart
+<div *ngIf="data != null" class="d-flex justify-content-center">
+
+  <canvas style="min-height: 30vh; height: 250px; max-height: 95vh" baseChart
           [data]="data"
           [labels]="labels"
           [colors]="colors"
           [chartType]="'pie'"
           [options]="pieChartOptions"></canvas>
+
 </div>

@@ -7,7 +7,7 @@
   </div>
   <div *ngIf="barChartLabels != null">
 
-    <canvas baseChart
+    <canvas style="min-height: 40vh; height: 300px; max-height: 95vh" baseChart
             [datasets]="barChartData"
             [labels]="barChartLabels"
             [options]="barChartOptions"

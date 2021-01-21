@@ -6,7 +6,7 @@
     No data available
   </div>
   <div *ngIf="lineChartLabels != null">
-  <canvas baseChart width="400" height="400"
+  <canvas baseChart style="min-height: 50vh; height: 400px; max-height: 95vh"
           [datasets]="lineChartData"
           [labels]="lineChartLabels"
           [options]="lineChartOptions"

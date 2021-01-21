@@ -20,8 +20,8 @@
   </app-section>
 
   <app-section [title]="'Latest news about COVID-19 '+countryDisplayName()">
-    <div class="newsDiv">
-      <app-news-listing [countrySlugObservable]="slugData"></app-news-listing>
+    <div class="newsDiv" [class]="{'full': listing.newsData != null && listing.newsData.length > 0}">
+      <app-news-listing #listing [countrySlugObservable]="slugData"></app-news-listing>
     </div>
 
   </app-section>

@@ -5,3 +5,6 @@
   max-height: 30vh;
   overflow-y: auto;
 }
+.newsDiv.full {
+  min-height: 200px;
+}

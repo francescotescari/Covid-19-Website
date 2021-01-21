@@ -24,11 +24,11 @@ export class DailyBarChartComponent implements OnInit {
     hover: {
       animationDuration: 0,
     },
-    responsiveAnimationDuration: 0
+    responsiveAnimationDuration: 0,
+    maintainAspectRatio: false
   };
 
   loaded = false;
-  explain = false;
 
   constructor(private loadManager: LoadmanagerService) {
   }

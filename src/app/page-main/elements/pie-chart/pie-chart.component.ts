@@ -26,7 +26,8 @@ export class PieChartComponent implements OnInit {
     hover: {
       animationDuration: 0,
     },
-    responsiveAnimationDuration: 0
+    responsiveAnimationDuration: 0,
+    maintainAspectRatio: false
   };
 
 
