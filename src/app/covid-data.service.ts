@@ -97,8 +97,10 @@ export class CovidDataService {
   }
 
   private fetchDailyWorldFallback(subj: Subject<CovidSimpleEntry[]>): void {
-    this.http.get<NinjaApiEntry>('https://corona.lmao.ninja/v2/historical/all', {responseType: 'json'})
-      .pipe(map(ninjaToSimpleMapperDated)).subscribe(subj);
+    this.http.get<NinjaApiEntry>('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {responseType: 'json'})
+      .pipe(map(ninjaToSimpleMapperDated)).pipe(map(value => {
+        return value.filter(val => new Date(val.Date).getTime() > new Date('2020-04-13T00:00:00Z').getTime());
+    })).subscribe(subj);
   }
 
 

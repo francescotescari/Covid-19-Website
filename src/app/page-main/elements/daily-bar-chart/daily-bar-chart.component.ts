@@ -36,7 +36,8 @@ export class DailyBarChartComponent implements OnInit {
   ngOnInit(): void {
     const loaded = this.loadManager.registerLoader();
     this.dataSource.pipe(map(value => {
-      return value.slice(Math.max(0, value.length - 7));
+      return value.slice(Math.max(0, value.length - 7))
+        .filter(entry => new Date(entry.Date).getTime() > (new Date().getTime() - 8 * 24 * 3600 * 1000));
     })).subscribe({
       next: value => {
         const labels = value.map((entry, index) => {
