@@ -41,7 +41,7 @@ export class HomepageComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.apis.fetchSummary().subscribe(this.summarySubject);
-      this.apis.fetchDailyWorld().pipe(map(value => diffToSimpleMapperDated(value as DatedCovidDiffEntry[]))).subscribe(this.globalDataSource);
+      this.apis.fetchDailyWorld().subscribe(this.globalDataSource);
     }, 0);
 
   }

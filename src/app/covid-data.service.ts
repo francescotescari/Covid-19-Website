@@ -1,9 +1,16 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {ApiCountryCovidEntry, CountryDiffEntry, CovidDiffEntry, CovidSimpleEntry, DatedCovidSimpleEntry} from './covid-data.models';
+import {Observable, of, ReplaySubject, Subject} from 'rxjs';
+import {
+  ApiCountryCovidEntry,
+  CountryDiffEntry,
+  CovidDiffEntry,
+  CovidSimpleEntry,
+  DatedCovidSimpleEntry, diffToSimpleMapper,
+  NinjaApiEntry, ninjaToSimpleMapperDated, simpleToDiffMapperDated
+} from './covid-data.models';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {FirestoreDocCache, LocalStorageCache, MultiCacheLevel} from './caching';
 
 
@@ -73,8 +80,25 @@ export class CovidDataService {
       () => this.http.get<ApiCountryModel[]>('https://api.covid19api.com/countries', {responseType: 'json'}));
   }
 
-  fetchDailyWorld(): Observable<CovidDiffEntry[]> {
-    return this.http.get<CovidDiffEntry[]>('https://api.covid19api.com/world?from=2020-04-13T00:00:00Z', {responseType: 'json'});
+  fetchDailyWorld(): Observable<CovidSimpleEntry[]> {
+    const result = new ReplaySubject<CovidSimpleEntry[]>();
+    this.http.get<CovidDiffEntry[]>('https://api.covid19api.com/world?from=2020-04-13T00:00:00Z', {responseType: 'json'})
+      .pipe(map(diffToSimpleMapper)).subscribe({
+      next: value => {
+        if (value.length !== 0 && value[value.length - 1].Confirmed > 0) {
+          return result.next(value);
+        } else {
+          this.fetchDailyWorldFallback(result);
+        }
+      },
+      error: err => result.error(err)
+    });
+    return result;
+  }
+
+  private fetchDailyWorldFallback(subj: Subject<CovidSimpleEntry[]>): void {
+    this.http.get<NinjaApiEntry>('https://corona.lmao.ninja/v2/historical/all', {responseType: 'json'})
+      .pipe(map(ninjaToSimpleMapperDated)).subscribe(subj);
   }
 
 

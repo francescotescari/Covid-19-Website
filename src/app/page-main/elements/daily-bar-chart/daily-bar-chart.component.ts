@@ -41,7 +41,7 @@ export class DailyBarChartComponent implements OnInit {
       next: value => {
         const labels = value.map((entry, index) => {
           if (entry.Date != null) {
-            const date = new Date(Date.parse(entry.Date));
+            const date = new Date(entry.Date);
             return date.getDate() + '/' + (date.getMonth() + 1);
           } else {
             return null;

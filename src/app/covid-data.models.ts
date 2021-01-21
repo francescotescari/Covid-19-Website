@@ -76,6 +76,27 @@ export function diffToSimpleEntry(entry: CovidDiffEntry): DatedCovidSimpleEntry 
   };
 }
 
+export interface NinjaApiEntry {
+  cases: object;
+  deaths: object;
+  recovered: object;
+}
+
+export const ninjaToSimpleMapperDated = (value: NinjaApiEntry) => {
+  const keys = [['cases', 'Confirmed'], ['deaths', 'Deaths'], ['recovered', 'Recovered']];
+  const tmp = {};
+  for (const key of keys) {
+    const data = value[key[0]];
+    Object.entries(data).forEach(([date, num]) => {
+      tmp[date] = tmp[date] || {};
+      const entry = tmp[date];
+      entry[key[1]] = num;
+      entry.Date = new Date(date).getTime();
+    });
+  }
+  return Object.values<DatedCovidSimpleEntry>(tmp).sort(((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()));
+};
+
 export const diffToSimpleMapperDated = (value: DatedCovidDiffEntry[]) => {
   let firstVal = value[0];
   firstVal = {
