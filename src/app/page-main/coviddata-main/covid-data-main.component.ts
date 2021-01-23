@@ -73,7 +73,7 @@ export class CovidDataMainComponent implements OnInit, AfterContentInit {
 
 
   ngAfterContentInit(): void {
-    this.dataSource.subscribe(next => this.loaded.complete());
+    this.dataSource.subscribe({next: next => this.loaded.complete(), error: err => this.loaded.complete()});
   }
 
   countryDisplayName(): string {

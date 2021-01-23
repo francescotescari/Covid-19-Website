@@ -59,14 +59,14 @@ abstract class CacheLevel<T> {
             next: data => {
               result.next(data);
               this.setCached(key, data);
-            }
+            },
+            error: err => result.error(err)
           });
         } else {
           debug('Value found cached', this);
           result.next(value);
         }
-      }
-
+      },
     });
     return result;
   }

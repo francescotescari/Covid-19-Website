@@ -49,7 +49,7 @@ export class HomepageComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.countriesTableObservable = this.summarySubject.pipe(map(value => CovidDataService.GlobalCountryDataMapper(value)));
     const sub = this.loadManager.registerLoader();
-    this.summarySubject.subscribe(value => sub.complete());
+    this.summarySubject.subscribe({next: value => sub.complete(), error: err => sub.complete()});
     this.summaryDataSource = this.summarySubject.pipe(map(value => value.Global));
   }
 
