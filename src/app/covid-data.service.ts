@@ -91,7 +91,7 @@ export class CovidDataService {
           this.fetchDailyWorldFallback(result);
         }
       },
-      error: err => result.error(err)
+      error: err => this.fetchDailyWorldFallback(result)
     });
     return result;
   }
