@@ -1,3 +1,7 @@
+### Notice
+The project was updated last second after that the covid19 apis messed up once again the world data.
+The fix just switch defenitely to the disease.sh instead of trying to use the covid19 ones (for consistency).
+
 # Covid19
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.

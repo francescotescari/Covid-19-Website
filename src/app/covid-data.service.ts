@@ -82,6 +82,8 @@ export class CovidDataService {
 
   fetchDailyWorld(): Observable<CovidSimpleEntry[]> {
     const result = new ReplaySubject<CovidSimpleEntry[]>();
+    this.fetchDailyWorldFallback(result);
+    /*
     this.http.get<CovidDiffEntry[]>('https://api.covid19api.com/world?from=2020-04-13T00:00:00Z', {responseType: 'json'})
       .pipe(map(diffToSimpleMapper)).subscribe({
       next: value => {
@@ -93,13 +95,14 @@ export class CovidDataService {
       },
       error: err => this.fetchDailyWorldFallback(result)
     });
+     */
     return result;
   }
 
   private fetchDailyWorldFallback(subj: Subject<CovidSimpleEntry[]>): void {
     this.http.get<NinjaApiEntry>('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {responseType: 'json'})
       .pipe(map(ninjaToSimpleMapperDated)).pipe(map(value => {
-        return value.filter(val => new Date(val.Date).getTime() > new Date('2020-04-13T00:00:00Z').getTime());
+      return value.filter(val => new Date(val.Date).getTime() > new Date('2020-04-13T00:00:00Z').getTime());
     })).subscribe(subj);
   }
 
